@@ -1,5 +1,67 @@
 .cartIconBlock {
-    position: absolute;
-    top: 25%;
-    right: 20px;;
+  position: absolute;
+  top: 25%;
+  right: 20px;
+  background-color: #f6c717;
+  padding: 5px;
+  text-align: right;
+}
+.cartIconBlock:hover {
+  background-color: #f4cd4e;
+}
+.cartIconBlock div {
+  text-transform: uppercase;
+  padding-bottom: 5px;
+}
+.cartIconBlock a {
+  color: #000;
+  text-decoration: none;
+  text-align: right;
+}
+.cartBlock {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #f4f4f4;
+  width: 800px;
+  min-height: 70vh;
+  padding: 24px;
+}
+.cartBlock h1 {
+  color: #000;
+}
+.productsList {
+  padding: 16px;
+  background-color: #fff;
+  flex: 1 1 auto;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0px;
+  list-style: none;
+  padding-left: 16px;
+}
+.productsList li {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.colorPrice {
+  color: #000;
+}
+.productsSum {
+  background-color: white;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 50px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-bottom: 0px;
+  justify-content: space-between;
+}
+.productsSum span {
+  color: #000;
+}
+.productsGroupOrigin h3 {
+  color: #f6c717;
+  text-transform: uppercase;
 }
