@@ -1,9 +1,4 @@
-export const filterUnique = (arr) => {
-  return arr.filter((v, i, a) => a.indexOf(v) === i);
-};
-export const sumProducts = (arr) => {
-  return arr.map((item) => item.price).reduce((prev, curr) => prev + curr, 0);
-};
+import {filterUnique} from './filterProducts'
 
 export const groupProductsInCart = (arrayOfObj) => {
   let result = filterUnique(arrayOfObj).reduce(function (r, a) {

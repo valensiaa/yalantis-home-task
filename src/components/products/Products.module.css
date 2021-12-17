@@ -1,0 +1,16 @@
+.productsBlock {
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f4f4;
+  width: 1200px;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 24px;
+  padding-left: 9px;
+}
+.productsItems {
+  display: flex;
+  flex-wrap: wrap;
+}

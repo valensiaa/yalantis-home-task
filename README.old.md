@@ -1,1 +1,0 @@
-# yalantis-home-task-1

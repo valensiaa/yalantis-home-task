@@ -1,10 +1,11 @@
 import { useMemo, useContext } from "react";
-import { Store } from "../context/createContext";
-import Cart from "./Cart";
-import { groupProductsInCart, filterUnique, sumProducts } from "./actions";
+import { Store } from "../../context/storeContext";
+import Cart from "../../components/cart/Cart";
+import { filterUnique } from "../../utils/helpers/filterProducts";
+import { sumProducts } from "../../utils/helpers/sumProducts";
+import { groupProductsInCart } from "../../utils/helpers/groupProducts";
 
 const CartContainer = () => {
-   
   const { state } = useContext(Store);
   const { cartProducts } = state;
 
