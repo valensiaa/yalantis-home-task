@@ -1,0 +1,22 @@
+.productsList {
+  padding: 16px;
+  background-color: #fff;
+  flex: 1 1 auto;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0px;
+  list-style: none;
+  padding-left: 16px;
+}
+.productsList li {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.colorPrice {
+  color: #000;
+}
+.productsGroupOrigin h3 {
+  color: #f6c717;
+  text-transform: uppercase;
+}
