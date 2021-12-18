@@ -2,7 +2,7 @@ import style from "./Cart.module.css";
 
 const Cart = ({ titleGroup, listGroup }) => {
   return (
-    <div key={listGroup.id} className={style.productsGroupOrigin}>
+    <div className={style.productsGroupOrigin}>
       <h3>{titleGroup}</h3>
       <ul className={style.productsList}>
         {listGroup.map((u) => (
