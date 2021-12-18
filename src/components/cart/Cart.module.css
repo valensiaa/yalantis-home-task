@@ -1,15 +1,3 @@
-.cartBlock {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #f4f4f4;
-  width: 800px;
-  min-height: 70vh;
-  padding: 24px;
-}
-.cartBlock h1 {
-  color: #000;
-}
 .productsList {
   padding: 16px;
   background-color: #fff;
@@ -26,19 +14,6 @@
   width: 100%;
 }
 .colorPrice {
-  color: #000;
-}
-.productsSum {
-  background-color: white;
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 50px;
-  padding-left: 16px;
-  padding-right: 16px;
-  margin-bottom: 0px;
-  justify-content: space-between;
-}
-.productsSum span {
   color: #000;
 }
 .productsGroupOrigin h3 {

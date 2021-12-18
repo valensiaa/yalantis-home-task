@@ -1,6 +1,7 @@
 import { useMemo, useContext } from "react";
 import { Store } from "../../context/storeContext";
 import Cart from "../../components/cart/Cart";
+import style from "./Cart.module.css";
 import { filterUnique } from "../../utils/helpers/filterProducts";
 import { sumProducts } from "../../utils/helpers/sumProducts";
 import { groupProductsInCart } from "../../utils/helpers/groupProducts";
@@ -17,11 +18,20 @@ const CartContainer = () => {
   }, [cartProducts]);
 
   return (
-    <Cart
-      cartProducts={groupedProductsInCart}
-      sumCartProducts={sumCartProducts}
-      nCartProducts={nCartProducts}
-    />
+    <div className={style.cartBlock}>
+      <h1>Cart</h1>
+      {Object.keys(groupedProductsInCart).length === 0 ? (
+        <p>Cart is empty</p>
+      ) : (
+        Object.entries(groupedProductsInCart).map((elem) => (
+          <Cart key={elem.id} titleGroup={elem[0]} listGroup={elem[1]} />
+        ))
+      )}
+      <p className={style.productsSum}>
+        Currently {nCartProducts} products in the cart with summary
+        <span> {sumCartProducts}$</span>
+      </p>
+    </div>
   );
 };
 
