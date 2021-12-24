@@ -4,11 +4,10 @@ import ProductInfoContainer from "../../pages/ProductInfo/ProductInfoContainer";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "../Header/Header";
 
-const MainLayout = ({children}) => {
+const MainLayout = () => {
   return (
       <div className="app-wrapper">
         <Header />
-        {children}    
         <Switch>
           <Route exact path="/" component={ProductsContainer} />
           <Route path="/cart" component={CartContainer} />

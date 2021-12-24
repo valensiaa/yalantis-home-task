@@ -1,16 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
 import style from "./CartIcon.module.css";
-import { Store } from '../../context/storeContext';
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { sumProducts } from "../../utils/helpers/sumProducts";
 import { filterUnique } from '../../utils/helpers/filterProducts'
+import { useSelector } from "react-redux";
 
 const CartIcon = () => {
   const location = useLocation();
   const {pathname} = location
 
-  const { state } = useContext(Store);
-  const { cartProducts } = state;
+  const cartProducts = useSelector(state => state.products.cartProducts)
 
   const sum = useMemo(() => {
     return sumProducts(filterUnique(cartProducts));

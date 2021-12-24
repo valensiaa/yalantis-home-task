@@ -1,6 +1,6 @@
 import style from "./Cart.module.css";
 
-const Cart = ({ titleGroup, listGroup }) => {
+const Cart = ({ titleGroup, listGroup, key }) => {
   return (
     <div className={style.productsGroupOrigin}>
       <h3>{titleGroup}</h3>

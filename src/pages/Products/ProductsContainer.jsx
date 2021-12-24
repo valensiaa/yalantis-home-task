@@ -1,14 +1,15 @@
-import { useEffect, useContext, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import ProductCard from "../../components/productCard/ProductCard";
 import style from './Products.module.css'
-import { Store } from "../../context/storeContext";
+//import { Store } from "../../context/storeContext";
 import { setProducts, addToCart } from "../../bus/products/reducer";
 import { changeDate } from "../../utils/helpers/date";
 import { fetchData } from "../../services/api";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductsContainer = () => {
-  const { state, dispatch } = useContext(Store);
-  const { products } = state;
+  const products = useSelector(state => state.products.products)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     fetchData().then((data) => dispatch(setProducts(data.items)));
@@ -17,7 +18,7 @@ const ProductsContainer = () => {
   const addToCartProduct = useCallback((product) => {
     dispatch(addToCart(product));
   }, []);
-
+ console.log(products)
   return (
     <div className={style.productsBlock}>
       <h1>Products</h1>
