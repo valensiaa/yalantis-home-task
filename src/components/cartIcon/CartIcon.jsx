@@ -9,7 +9,7 @@ const CartIcon = () => {
   const location = useLocation();
   const {pathname} = location
 
-  const cartProducts = useSelector(state => state.products.cartProducts)
+  const cartProducts = useSelector(state => state.cart.cartProducts)
 
   const sum = useMemo(() => {
     return sumProducts(filterUnique(cartProducts));

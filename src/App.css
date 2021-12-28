@@ -9,6 +9,7 @@
   position: relative;
   align-self: flex-end;
 }
+
 h1 {
   color: #f6c717;
   margin: 0px;
@@ -37,8 +38,9 @@ button {
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
-button:hover {
-  background-color: #f4cd4e;
+button:hover,
+button:disabled {
+  background-color: #f3d46d;
   transition: all 0.3s ease-in-out;
 }
 .App-header {

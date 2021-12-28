@@ -8,15 +8,36 @@
   list-style: none;
   padding-left: 16px;
 }
+.titleProduct {
+  flex: 1 1 60%;
+}
 .productsList li {
+  align-items: center;
   display: inline-flex;
   justify-content: space-between;
   width: 100%;
+  margin: 6px 0px;
+}
+.productsList li p {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 .colorPrice {
   color: #000;
+  flex: 0 0 10%;
+  text-align: center;
 }
 .productsGroupOrigin h3 {
   color: #f6c717;
   text-transform: uppercase;
+}
+.counterBlock {
+  display: flex;
+  flex: 0 0 10%;
+  align-items: center;
+  text-align: center;
+}
+.deleteIcon img {
+  width: 15px;
+  cursor: pointer;
 }

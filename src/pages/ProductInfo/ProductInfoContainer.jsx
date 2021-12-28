@@ -2,20 +2,19 @@ import { useEffect, useCallback } from "react";
 import ProductInfo from "../../components/productInfo/ProductInfo";
 import { useParams } from "react-router";
 import { changeDate } from "../../utils/helpers/date";
-import { fetchProduct } from "../../services/api";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../bus/products/reducer";
-import { setProduct } from "../../bus/productInfo/reducer";
+import { addToCart } from "../../bus/cart/reducer";
+import { fetchProductInfo } from "../../bus/productInfo/thunks";
 
 
 const ProductInfoContainer = () => {
-  const { dispatch } = useDispatch();
+  //debugger
+  const dispatch = useDispatch();
   let { productId } = useParams();
   const productInfo = useSelector(state => state.productInfo.product)
 
-
   useEffect(() => {
-    fetchProduct(productId).then((data) => setProduct(data.data));
+    fetchProductInfo(productId, dispatch)
   }, []);
 
   const addToCartProduct = useCallback(() => {

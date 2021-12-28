@@ -10,6 +10,9 @@
 .cartBlock h1 {
   color: #000;
 }
+.cartBlock p {
+  margin: 16px;
+}
 .productsSum {
   background-color: white;
   display: inline-flex;
