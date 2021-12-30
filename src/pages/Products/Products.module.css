@@ -10,9 +10,7 @@
   padding-right: 24px;
   padding-left: 9px;
 }
-.filterProductsBlock {
-  display: flex;
-}
+
 .productsItems {
   display: flex;
   flex-wrap: wrap;
