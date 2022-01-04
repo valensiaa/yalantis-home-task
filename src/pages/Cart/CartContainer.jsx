@@ -11,7 +11,7 @@ const CartContainer = () => {
   const cartProducts = useSelector(state => state.cart.cartProducts)
   const dispatch = useDispatch()
 
-  const nCartProducts = filterUnique(cartProducts).length;
+  const nCartProducts = filterUnique(cartProducts).map((item) => item.quantity).reduce((prev, curr) => prev + curr, 0);
   const sumCartProducts = sumProducts(cartProducts);
 
   const groupedProductsInCart = useMemo(() => {
@@ -20,7 +20,7 @@ const CartContainer = () => {
 
   const removeFromCartCb = useCallback((id) => {
     dispatch(removeFromCart(id));
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={style.cartBlock}>

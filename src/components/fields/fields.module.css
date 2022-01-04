@@ -1,3 +1,46 @@
-.minMaxBlock {
+.paginationBlock,
+.minMaxBlock,
+.paginationList {
   display: flex;
+}
+.paginationList {
+  flex: 1 1 auto;
+  justify-content: center;
+  padding-left: 0px;
+  margin: 5px;
+}
+.selectedPage {
+  background-color: #f6c717;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  padding: 2px;
+}
+.pageNumber:hover {
+  background-color: #f6c717;
+  transition: all 0.3s ease-in-out;
+}
+.pageNumber {
+  padding: 2px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+.paginationPrevious,
+.paginationNext {
+  cursor: pointer;
+  max-width: 200px;
+  font-size: 12px;
+  background-color: #fff;
+}
+.paginationPrevious:hover,
+.paginationNext:hover {
+  background-color: #f6c717;
+}
+.paginationPrevious:disabled,
+.paginationNext:disabled {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.486);
 }

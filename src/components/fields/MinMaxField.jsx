@@ -1,24 +1,18 @@
-import { useRef } from "react";
-import style from "./fields.module.css";
+import style from "./Fields.module.css";
 
 const MinMaxField = ({onHandleMinPrice, onHandleMaxPrice}) => {
-
-  const watchMinValue = useRef()
-  const watchMaxValue = useRef()
 
   return (
     <div className={style.minMaxBlock}>
       <input
         type="number"
-        ref={watchMinValue}
         placeholder={"min price"}
-        onChange={(e) => onHandleMinPrice(e, watchMaxValue)}
+        onChange={(e) => onHandleMinPrice(e)}
       />
       <input
         type="number"
-        ref={watchMaxValue}
         placeholder={"max price"}
-        onChange={(e) => onHandleMaxPrice(e, watchMinValue)}
+        onChange={(e) => onHandleMaxPrice(e)}
       />
     </div>
   );

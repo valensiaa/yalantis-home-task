@@ -1,3 +1,11 @@
-.filterProductsBlock {
+.filterFieldsBlock {
   display: flex;
+  flex-direction: column;
+  width: 1150px;
+  padding-left: 15px;
+}
+.filterFields {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }

@@ -13,7 +13,7 @@ const Cart = ({ titleGroup, listGroup, removeFromCart}) => {
             <div className={style.counterBlock}>
               <Counter id={u.id} count={u.quantity}/>
             </div>
-            <span className={style.colorPrice}> {u.price}$</span>
+            <span className={style.colorPrice}> {u.price*u.quantity}$</span>
             <div className={style.deleteIcon} onClick={()=>removeFromCart(u.id)}>
               <img src={iconDelete} alt="delete-product"/>
             </div>
