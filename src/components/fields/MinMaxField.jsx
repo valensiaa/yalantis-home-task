@@ -1,7 +1,6 @@
 import style from "./Fields.module.css";
 
-const MinMaxField = ({onHandleMinPrice, onHandleMaxPrice}) => {
-
+const MinMaxField = ({ onHandleMinPrice, onHandleMaxPrice }) => {
   return (
     <div className={style.minMaxBlock}>
       <input

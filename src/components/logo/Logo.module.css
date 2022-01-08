@@ -1,0 +1,25 @@
+.logoBlock {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex: 1 1 150px;
+}
+
+.logoBlock.logoBlockCenter {
+  justify-content: center;
+}
+
+.logoBlock div {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background-color: #f6c717;
+}
+.logoBlock span {
+  position: absolute;
+  left: 22px;
+  top: 20%;
+  font-size: 30px;
+  font-weight: bold;
+  color: black;
+}

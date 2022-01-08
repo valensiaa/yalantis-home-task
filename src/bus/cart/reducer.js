@@ -1,12 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit'
-// import { normalize, schema } from 'normalizr'
-
-// const countEntity = new schema.Entity('count')
-// const productEntity = new schema.Entity('products', {
-//    count: countEntity
-// })
-
-
 
 export const cartSlice = createSlice({
   name: 'cart',

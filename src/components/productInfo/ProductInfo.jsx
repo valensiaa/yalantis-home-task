@@ -1,7 +1,9 @@
 import style from "./ProductInfo.module.css";
 import productImg from "./../../assets/default-product.png";
 
-const ProductInfo = ({ addToCart, changeDate, productInfo }) => {
+const ProductInfo = ({ addToCart, changeDate, productInfo, isInArray }) => {
+  console.log(isInArray)
+
   return (
     <div className={style.productInfoBlock}>
       <div className={style.productInfoDesc}>
@@ -27,8 +29,8 @@ const ProductInfo = ({ addToCart, changeDate, productInfo }) => {
             Price: {productInfo.price}$
           </div>
         </div>
-        <button className={style.productInfoAddToCart} onClick={addToCart}>
-          add to cart
+        <button disabled={isInArray} className={style.productInfoAddToCart} onClick={addToCart}>
+          {isInArray ? 'product added' : 'add to cart'}
         </button>
       </div>
     </div>

@@ -10,6 +10,12 @@
 }
 .titleProduct {
   flex: 1 1 60%;
+  text-decoration: none;
+  color: #000;
+}
+.titleProduct:hover {
+  color: #f6c717;
+  transition: all 0.3s ease-in-out;
 }
 .productsList li {
   align-items: center;

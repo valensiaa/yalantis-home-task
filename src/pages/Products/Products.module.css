@@ -7,11 +7,16 @@
   justify-content: center;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 24px;
-  padding-left: 9px;
+  padding: 5px 9px 24px 0px;
+  min-height: 300px;
 }
 
 .productsItems {
   display: flex;
   flex-wrap: wrap;
+}
+
+.errorMessage {
+  margin: 20px 10px;
+  color: #f6c717;
 }

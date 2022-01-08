@@ -5,9 +5,11 @@
   align-items: center;
 }
 .app-header {
+  display: flex;
   flex: 0 0 80px;
-  position: relative;
-  align-self: flex-end;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
 }
 
 h1 {

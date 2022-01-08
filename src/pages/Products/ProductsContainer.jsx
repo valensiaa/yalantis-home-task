@@ -1,54 +1,54 @@
-import { useEffect, useCallback, useState, useMemo } from "react";
+import { useEffect, useCallback } from "react";
 import ProductCard from "../../components/productCard/ProductCard";
 import style from "./Products.module.css";
 import { addToCart } from "../../bus/cart/reducer";
 import { changeDate } from "../../utils/helpers/date";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductsFirstRenderThunk } from "../../bus/products/thunks";
+import { getProducts } from "../../bus/products/thunks";
 import FilterFieldsContainer from "./FilterFields/FilterFieldsContainer";
-import { filteredProductsBySelect } from "../../utils/helpers/filterProductsBySelectValues";
-import { setProducts } from "../../bus/products/reducer";
+import Loader from "../../components/loader/Loader";
+import { stateProducts } from "../../bus/products/selectors";
+import { selectCartIds } from "../../bus/cart/selectors";
+
 
 const ProductsContainer = () => {
-  const state = useSelector((state) => state.products);
-  const { products, currentPage, productsPerPage, minPrice, maxPrice } = state;
+  const state = useSelector(stateProducts);
+  const { products, loading, error } = state;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchProductsFirstRenderThunk(
-      dispatch,
-      currentPage,
-      productsPerPage,
-      minPrice,
-      maxPrice
-    );
+    dispatch(getProducts(dispatch));
   }, [dispatch]);
 
-  const handleChangeSelectOrigin = useCallback((e) => {
-    const filteredProducts = filteredProductsBySelect(products, e)
-      if(filteredProducts.length !== 0) {
-    dispatch(setProducts(filteredProducts));
-  }
-  }, [dispatch, products]);
+  const cartIdsArray = useSelector(selectCartIds);
 
-
-  const addToCartProduct = useCallback((product) => {
-    dispatch(addToCart(product));
-  }, []);
+  const addToCartProductCb = useCallback(
+    (product) => {
+      dispatch(addToCart(product));
+    },
+    [dispatch]
+  );
 
   return (
     <div className={style.productsBlock}>
       <h1>Products</h1>
-      <FilterFieldsContainer handleChangeSelectOrigin={handleChangeSelectOrigin}/>
+      <FilterFieldsContainer />
       <div className={style.productsItems}>
-        {products.map((p) => (
-          <ProductCard
-            key={p.id}
-            product={p}
-            changeDate={changeDate}
-            addToCart={addToCartProduct}
-          />
-        ))}
+        {error !== "" ? (
+          <div className={style.errorMessage}>{error}</div>
+        ) : loading ? (
+          <Loader />
+        ) : (
+          products.map((p) => (
+            <ProductCard
+              cartIdsArray={cartIdsArray}
+              key={p.id}
+              product={p}
+              changeDate={changeDate}
+              addToCart={addToCartProductCb}
+            />
+          ))
+        )}
       </div>
     </div>
   );

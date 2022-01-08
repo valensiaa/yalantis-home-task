@@ -1,26 +1,42 @@
 import { useDispatch, useSelector } from "react-redux";
 import style from "./FilterFields.module.css";
-import MinMaxField from "../../../components/fields/MinMaxField";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import Select from "react-select";
+import { selectStyles } from "./selectStyles";
+
+import MinMaxField from "../../../components/fields/MinMaxField";
 import { productsPerPageFilter } from "../../../utils/helpers/createObjSelectPages";
-import { fetchProductsByFilters } from "../../../bus/products/thunks";
+import {fetchProductsByFilters,fetchOriginThunk} from "../../../bus/products/thunks";
 import PaginationField from "../../../components/fields/PaginationField";
+import {
+  setFilteredArrayByOrigins,
+  setMinPrice,
+  setMaxPrice,
+  setProductsPerPage,
+  setCurrentPage,
+} from "../../../bus/products/reducer";
+import { selectStringQueryOrigins, stateProducts } from "../../../bus/products/selectors";
 
-
-const FilterFieldsContainer = ({ handleChangeSelectOrigin }) => {
-  const state = useSelector((state) => state.products);
-  const {
-    origins,
-    currentPage,
-    productsPerPage,
-    totalProductsCount,
-    minPrice,
-    maxPrice,
-  } = state;
+const FilterFieldsContainer = () => {
   const dispatch = useDispatch();
+  const state = useSelector(stateProducts);
+  const queryString = useSelector(selectStringQueryOrigins);
   
-  //чи варто використовувати колбек або юзефект???
+  const { origins, totalProductsCount } = state;
+  const { currentPage, productsPerPage, minPrice, maxPrice } = state.filters;
+ 
+  useEffect(() => {
+    fetchOriginThunk(dispatch);
+    fetchProductsByFilters(
+      dispatch,
+      currentPage,
+      productsPerPage,
+      queryString,
+      minPrice,
+      maxPrice
+    );
+  }, [dispatch, currentPage, productsPerPage, queryString, minPrice, maxPrice]);
+
   let pagesCount = Math.ceil(totalProductsCount / productsPerPage);
   let pages = [];
   for (let i = 1; i <= pagesCount; i++) {
@@ -30,49 +46,36 @@ const FilterFieldsContainer = ({ handleChangeSelectOrigin }) => {
   const handleMaxPriceCb = useCallback(
     (e) => {
       const value = +e.currentTarget.value;
-     // dispatch(setMaxPrice(value));
-      fetchProductsByFilters(
-        dispatch,
-        currentPage,
-        productsPerPage,
-        minPrice,
-        value
-      );
+      dispatch(setMaxPrice(value));
     },
-    [dispatch, currentPage, productsPerPage, minPrice]
+    [dispatch]
   );
 
   const handleMinPriceCb = useCallback(
     (e) => {
       const value = +e.currentTarget.value;
-     // dispatch(setMinPrice(value));
-      fetchProductsByFilters(
-        dispatch,
-        currentPage,
-        productsPerPage,
-        value,
-        maxPrice
-      );
+      dispatch(setMinPrice(value));
     },
-    [dispatch, currentPage, productsPerPage, maxPrice]
+    [dispatch]
   );
 
   const pageChangedCb = useCallback(
     (currentPage) => {
-      fetchProductsByFilters(
-        dispatch,
-        currentPage,
-        productsPerPage,
-        minPrice,
-        maxPrice
-      );
-    },
-    [dispatch, productsPerPage, minPrice, maxPrice]
-  );
+      dispatch(setCurrentPage(currentPage));
+    },[dispatch]);
+
+  const onChangeSelectOrigin = (e) => {
+    dispatch(setCurrentPage(1))
+    dispatch(setFilteredArrayByOrigins(e));
+  };
 
   const setProductsPerPageFromSelect = (e) => {
     const perPage = e.value;
-    fetchProductsByFilters(dispatch, currentPage, perPage, minPrice, maxPrice);
+    let pagesCount = Math.ceil(totalProductsCount / perPage);
+    dispatch(setProductsPerPage(perPage));
+    if (currentPage > pagesCount) {
+      dispatch(setCurrentPage(1));
+    }
   };
 
   return (
@@ -84,13 +87,14 @@ const FilterFieldsContainer = ({ handleChangeSelectOrigin }) => {
         />
         <Select
           isMulti
+          styles={selectStyles}
           name="origin"
           options={origins}
           placeholder="filter products by origin..."
-          onChange={(e) => handleChangeSelectOrigin(e)}
+          onChange={onChangeSelectOrigin}
         />
         <Select
-          className="basic-single"
+          styles={selectStyles}
           name="pages"
           options={productsPerPageFilter([10, 25, 50])}
           placeholder="products per page..."

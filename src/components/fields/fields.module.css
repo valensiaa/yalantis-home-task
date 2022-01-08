@@ -3,6 +3,32 @@
 .paginationList {
   display: flex;
 }
+.minMaxBlock input {
+  min-height: 38px;
+  max-width: 100px;
+  border: 1px solid #fff;
+  margin-left: 5px;
+  outline: none;
+  padding-left: 6px;
+}
+.minMaxBlock input:focus,
+.minMaxBlock input:hover {
+  border: 1px solid #f6c717;
+  transition: all 0.3s ease-in-out;
+}
+.minMaxBlock input::placeholder {
+  font-size: 13px;
+}
+/* Chrome, Safari, Edge, Opera */
+.minMaxBlock input::-webkit-outer-spin-button,
+.minMaxBlock input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+.minMaxBlock input[type="number"] {
+  -moz-appearance: textfield;
+}
 .paginationList {
   flex: 1 1 auto;
   justify-content: center;
@@ -16,6 +42,7 @@
   height: 20px;
   text-align: center;
   padding: 2px;
+  list-style: none;
 }
 .pageNumber:hover {
   background-color: #f6c717;
@@ -27,6 +54,7 @@
   width: 20px;
   height: 20px;
   text-align: center;
+  list-style: none;
 }
 .paginationPrevious,
 .paginationNext {
