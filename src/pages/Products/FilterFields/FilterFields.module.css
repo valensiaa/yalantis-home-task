@@ -15,7 +15,14 @@
   font-size: 12px;
   background-color: #fff;
 }
-.filterButton:hover {
+.filterButton:hover,
+.resetButton:hover {
   background-color: #f6c717;
   transition: all 0.3s ease-in-out;
+}
+button.resetButton {
+  width: 200px;
+  height: 38px;
+  font-size: 12px;
+  background-color: #fff;
 }

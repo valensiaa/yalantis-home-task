@@ -1,24 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchOrigin, fetchData, fetchAllDataFirst } from "../../services/api";
-import { setProducts, setOrigins, setTotalProductsCount } from "./reducer";
+import { fetchOrigin, fetchData } from "../../services/api";
 
 export const getProducts = createAsyncThunk(
   "products/getProducts",
-  async (dispatch) => {
-    return fetchAllDataFirst().then((data) => {
-      dispatch(setProducts(data.data.items));
-      dispatch(setTotalProductsCount(data.data.totalItems));
-    });
+  async (paramsQ) => {
+    const params = {
+      page: paramsQ.currentPage,
+      perPage: paramsQ.productsPerPage,
+      origins: paramsQ.filteredByOrigins,
+      minPrice: paramsQ.minPrice,
+      maxPrice: paramsQ.maxPrice,
+    };
+    const response = await fetchData(params);
+    return response.data;
   }
 );
 
-export const fetchOriginThunk = (dispatch) => {
-  fetchOrigin().then((data) => dispatch(setOrigins(data.items)));
-};
-
-export const fetchProductsByFilters = (dispatch, a, b, c, d, e) => {
-  fetchData(a, b, c, d, e).then((data) => {
-    dispatch(setProducts(data.data.items));
-    dispatch(setTotalProductsCount(data.data.totalItems));
-  });
-};
+export const getOrigins = createAsyncThunk("products/getOrigins", async () => {
+  const response = await fetchOrigin();
+  return response.data;
+});

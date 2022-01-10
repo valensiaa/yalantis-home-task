@@ -1,41 +1,37 @@
 import { useDispatch, useSelector } from "react-redux";
 import style from "./FilterFields.module.css";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Select from "react-select";
 import { selectStyles } from "./selectStyles";
-
 import MinMaxField from "../../../components/fields/MinMaxField";
 import { productsPerPageFilter } from "../../../utils/helpers/createObjSelectPages";
-import {fetchProductsByFilters,fetchOriginThunk} from "../../../bus/products/thunks";
+import { getOrigins } from "../../../bus/products/thunks";
 import PaginationField from "../../../components/fields/PaginationField";
 import {
-  setFilteredArrayByOrigins,
+  setFilteredStrByOrigins,
   setMinPrice,
   setMaxPrice,
   setProductsPerPage,
   setCurrentPage,
+  reset,
 } from "../../../bus/products/reducer";
-import { selectStringQueryOrigins, stateProducts } from "../../../bus/products/selectors";
+import { stateProducts } from "../../../bus/products/selectors";
 
 const FilterFieldsContainer = () => {
   const dispatch = useDispatch();
   const state = useSelector(stateProducts);
-  const queryString = useSelector(selectStringQueryOrigins);
-  
+
   const { origins, totalProductsCount } = state;
-  const { currentPage, productsPerPage, minPrice, maxPrice } = state.filters;
- 
+  const { currentPage, productsPerPage } = state.filters;
+
+  const [selectStateOrigin, setSelectStateOrigin] = useState([]);
+  const [selectStatePerPage, setSelectStatePerPage] = useState([]);
+  const [minPriceState, setMinPriceState] = useState("");
+  const [maxPriceState, setMaxPriceState] = useState("");
+
   useEffect(() => {
-    fetchOriginThunk(dispatch);
-    fetchProductsByFilters(
-      dispatch,
-      currentPage,
-      productsPerPage,
-      queryString,
-      minPrice,
-      maxPrice
-    );
-  }, [dispatch, currentPage, productsPerPage, queryString, minPrice, maxPrice]);
+    dispatch(getOrigins());
+  }, [dispatch]);
 
   let pagesCount = Math.ceil(totalProductsCount / productsPerPage);
   let pages = [];
@@ -46,6 +42,7 @@ const FilterFieldsContainer = () => {
   const handleMaxPriceCb = useCallback(
     (e) => {
       const value = +e.currentTarget.value;
+      setMaxPriceState(value);
       dispatch(setMaxPrice(value));
     },
     [dispatch]
@@ -54,6 +51,7 @@ const FilterFieldsContainer = () => {
   const handleMinPriceCb = useCallback(
     (e) => {
       const value = +e.currentTarget.value;
+      setMinPriceState(value);
       dispatch(setMinPrice(value));
     },
     [dispatch]
@@ -62,14 +60,18 @@ const FilterFieldsContainer = () => {
   const pageChangedCb = useCallback(
     (currentPage) => {
       dispatch(setCurrentPage(currentPage));
-    },[dispatch]);
+    },
+    [dispatch]
+  );
 
   const onChangeSelectOrigin = (e) => {
-    dispatch(setCurrentPage(1))
-    dispatch(setFilteredArrayByOrigins(e));
+    setSelectStateOrigin(e);
+    dispatch(setCurrentPage(1));
+    dispatch(setFilteredStrByOrigins(e));
   };
 
   const setProductsPerPageFromSelect = (e) => {
+    setSelectStatePerPage(e);
     const perPage = e.value;
     let pagesCount = Math.ceil(totalProductsCount / perPage);
     dispatch(setProductsPerPage(perPage));
@@ -78,15 +80,33 @@ const FilterFieldsContainer = () => {
     }
   };
 
+  const onReset = () => {
+    const clearFilters = {
+      filteredByOrigins: "",
+      currentPage: 1,
+      productsPerPage: 20,
+      minPrice: null,
+      maxPrice: null,
+    };
+    dispatch(reset(clearFilters));
+    setSelectStateOrigin([]);
+    setSelectStatePerPage([]);
+    setMinPriceState("");
+    setMaxPriceState("");
+  };
+
   return (
     <div className={style.filterFieldsBlock}>
       <div className={style.filterFields}>
         <MinMaxField
+          minPrice={minPriceState}
+          maxPrice={maxPriceState}
           onHandleMinPrice={handleMinPriceCb}
           onHandleMaxPrice={handleMaxPriceCb}
         />
         <Select
           isMulti
+          value={selectStateOrigin}
           styles={selectStyles}
           name="origin"
           options={origins}
@@ -95,11 +115,15 @@ const FilterFieldsContainer = () => {
         />
         <Select
           styles={selectStyles}
+          value={selectStatePerPage}
           name="pages"
           options={productsPerPageFilter([10, 25, 50])}
           placeholder="products per page..."
           onChange={setProductsPerPageFromSelect}
         />
+        <button className={style.resetButton} onClick={onReset}>
+          reset
+        </button>
       </div>
       <PaginationField
         pages={pages}

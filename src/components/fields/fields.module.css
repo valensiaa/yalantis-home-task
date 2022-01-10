@@ -3,8 +3,12 @@
 .paginationList {
   display: flex;
 }
+.minMaxBlock {
+  margin-left: -5px;
+}
 .minMaxBlock input {
-  min-height: 38px;
+  height: 34px;
+  max-height: 34px;
   max-width: 100px;
   border: 1px solid #fff;
   margin-left: 5px;

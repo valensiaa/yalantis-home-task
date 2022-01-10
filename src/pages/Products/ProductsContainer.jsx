@@ -7,18 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../bus/products/thunks";
 import FilterFieldsContainer from "./FilterFields/FilterFieldsContainer";
 import Loader from "../../components/loader/Loader";
-import { stateProducts } from "../../bus/products/selectors";
+import { paramsQuery, stateProducts } from "../../bus/products/selectors";
 import { selectCartIds } from "../../bus/cart/selectors";
-
 
 const ProductsContainer = () => {
   const state = useSelector(stateProducts);
+  const params = useSelector(paramsQuery);
   const { products, loading, error } = state;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProducts(dispatch));
-  }, [dispatch]);
+    dispatch(getProducts(params));
+  }, [dispatch, params]);
 
   const cartIdsArray = useSelector(selectCartIds);
 

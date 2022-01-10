@@ -14,12 +14,10 @@ export const sumProducts = createSelector(stateCartProducts, (cartArr) =>
 export const nProducts = createSelector(stateCartProducts, (cartArr) =>
   cartArr.map((item) => item.quantity).reduce((prev, curr) => prev + curr, 0)
 );
-export const groupedProducts = createSelector(
-  stateCartProducts,
-  (cartArray) =>
-    cartArray.reduce((r, a) => {
-      r[a.origin] = r[a.origin] || [];
-      r[a.origin].push(a);
-      return r;
-    }, {})
+export const groupedProducts = createSelector(stateCartProducts, (cartArray) =>
+  cartArray.reduce((r, a) => {
+    r[a.origin] = r[a.origin] || [];
+    r[a.origin].push(a);
+    return r;
+  }, {})
 );

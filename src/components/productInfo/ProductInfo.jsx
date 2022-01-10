@@ -2,7 +2,6 @@ import style from "./ProductInfo.module.css";
 import productImg from "./../../assets/default-product.png";
 
 const ProductInfo = ({ addToCart, changeDate, productInfo, isInArray }) => {
-  console.log(isInArray)
 
   return (
     <div className={style.productInfoBlock}>
