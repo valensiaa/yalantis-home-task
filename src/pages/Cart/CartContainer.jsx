@@ -1,21 +1,27 @@
-import { useMemo, useContext } from "react";
-import { Store } from "../../context/storeContext";
-import Cart from "../../components/cart/Cart";
+import { useCallback } from "react";
 import style from "./Cart.module.css";
-import { filterUnique } from "../../utils/helpers/filterProducts";
-import { sumProducts } from "../../utils/helpers/sumProducts";
-import { groupProductsInCart } from "../../utils/helpers/groupProducts";
+import Cart from "../../components/cart/Cart";
+import { removeFromCart } from "../../bus/cart/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  sumProducts,
+  nProducts,
+  groupedProducts,
+} from "../../bus/cart/selectors";
 
 const CartContainer = () => {
-  const { state } = useContext(Store);
-  const { cartProducts } = state;
+  const dispatch = useDispatch();
 
-  const nCartProducts = filterUnique(cartProducts).length;
-  const sumCartProducts = sumProducts(cartProducts);
+  const nCartProducts = useSelector(nProducts);
+  const sumCartProducts = useSelector(sumProducts);
+  const groupedProductsInCart = useSelector(groupedProducts);
 
-  const groupedProductsInCart = useMemo(() => {
-    return groupProductsInCart(cartProducts);
-  }, [cartProducts]);
+  const removeFromCartCb = useCallback(
+    (id) => {
+      dispatch(removeFromCart(id));
+    },
+    [dispatch]
+  );
 
   return (
     <div className={style.cartBlock}>
@@ -24,7 +30,12 @@ const CartContainer = () => {
         <p>Cart is empty</p>
       ) : (
         Object.entries(groupedProductsInCart).map((elem) => (
-          <Cart key={elem.id} titleGroup={elem[0]} listGroup={elem[1]} />
+          <Cart
+            key={elem.id}
+            titleGroup={elem[0]}
+            listGroup={elem[1]}
+            removeFromCart={removeFromCartCb}
+          />
         ))
       )}
       <p className={style.productsSum}>
