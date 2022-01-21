@@ -1,0 +1,17 @@
+.myAccountBlock {
+  position: relative;
+  flex: 0 0 200px;
+  margin-right: 30px;
+}
+.myAccountButton {
+  background-color: #fff;
+  border: 1px solid #f6c717;
+  padding: 12px 0px;
+}
+.myAccountButton {
+  text-transform: capitalize;
+}
+.myAccountButton:hover {
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
+}

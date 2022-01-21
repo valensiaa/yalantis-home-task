@@ -2,13 +2,13 @@ import { useEffect, useCallback } from "react";
 import ProductCard from "../../components/productCard/ProductCard";
 import style from "./Products.module.css";
 import { addToCart } from "../../bus/cart/reducer";
-import { changeDate } from "../../utils/helpers/date";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../bus/products/thunks";
 import FilterFieldsContainer from "./FilterFields/FilterFieldsContainer";
 import Loader from "../../components/loader/Loader";
 import { paramsQuery, stateProducts } from "../../bus/products/selectors";
 import { selectCartIds } from "../../bus/cart/selectors";
+import ProductCardButton from "../../components/productCard/ProductCardButton";
 
 const ProductsContainer = () => {
   const state = useSelector(stateProducts);
@@ -22,12 +22,13 @@ const ProductsContainer = () => {
 
   const cartIdsArray = useSelector(selectCartIds);
 
-  const addToCartProductCb = useCallback(
+  const addToCartHandler = useCallback(
     (product) => {
       dispatch(addToCart(product));
     },
     [dispatch]
   );
+
 
   return (
     <div className={style.productsBlock}>
@@ -40,13 +41,14 @@ const ProductsContainer = () => {
           <Loader />
         ) : (
           products.map((p) => (
-            <ProductCard
-              cartIdsArray={cartIdsArray}
-              key={p.id}
-              product={p}
-              changeDate={changeDate}
-              addToCart={addToCartProductCb}
-            />
+            <ProductCard key={p.id} product={p}>
+              <ProductCardButton
+                onClickHandler={addToCartHandler}
+                title={cartIdsArray.includes(p.id) ? "product added" : "add to cart"}
+                product={p}
+                inCart={cartIdsArray.includes(p.id) ? true : false}
+              />
+            </ProductCard>
           ))
         )}
       </div>

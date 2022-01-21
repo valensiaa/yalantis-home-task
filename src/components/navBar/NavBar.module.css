@@ -1,0 +1,21 @@
+.navBlock {
+  position: absolute;
+  top: 100%;
+  background-color: rgba(255, 255, 255);
+  width: 100%;
+  box-shadow: 0 11px 16px -3px rgba(0, 0, 0, 0.2);
+}
+.linkBlock {
+  padding: 10px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255);
+}
+.linkBlock a {
+  text-decoration: none;
+  text-transform: capitalize;
+  color: black;
+  font-size: 14px;
+}
+.linkBlock:hover {
+  border-bottom: 1px solid #f6c717;
+  transition: all 0.3s ease-in-out;
+}

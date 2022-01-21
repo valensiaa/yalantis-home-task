@@ -1,0 +1,36 @@
+.modalBlock {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(7px);
+}
+.modal {
+  width: 40vw;
+  position: relative;
+  height: auto;
+  padding: 2rem;
+  background-color: #f4f4f4;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+}
+.modalTitle {
+  margin-top: 0px;
+  text-transform: uppercase;
+}
+.modalClose {
+  font-weight: bold;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #331f53;
+  cursor: pointer;
+  background: transparent;
+  text-align: center;
+}

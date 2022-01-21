@@ -1,11 +1,9 @@
 import style from "./ProductCard.module.css";
 import productImg from "../../assets/default-product.png";
 import { Link } from "react-router-dom";
+import { changeDate } from "../../utils/helpers/date";
 
-const ProductCard = ({ product, changeDate, addToCart, cartIdsArray }) => {
-  
-  const inCart = (id) => cartIdsArray.includes(id);
-
+const ProductCard = ({product, children}) => {  
   return (
     <div key={product.id} className={style.productItem}>
       <div className={style.productImg}>
@@ -20,15 +18,11 @@ const ProductCard = ({ product, changeDate, addToCart, cartIdsArray }) => {
         <span>{product.origin}</span> - {changeDate(product.createdAt)}
       </div>
       <div className={style.productPrice}>{product.price}$</div>
-      <button
-        disabled={inCart(product.id)}
-        className={style.productAddToCart}
-        onClick={() => addToCart(product)}
-      >
-        {inCart(product.id) ? "product added" : "add to cart"}
-      </button>
+      {children}
     </div>
   );
+  
+
 };
 
 export default ProductCard;
