@@ -6,12 +6,13 @@ import FilterFieldsContainer from "./FilterFields/FilterFieldsContainer";
 import Loader from "../../components/loader/Loader";
 import { paramsQuery, stateMyAccount } from "../../bus/myAccount/selectors";
 import { setMyProducts } from "../../bus/myAccount/thunks";
-import ProductCardButton from "../../components/productCard/ProductCardButton";
 import useModal from "../../hooks/useModal";
 import Modal from "../../components/modal/Modal";
 import { editProduct } from "../../services/api";
+import EditableForm from "../../components/forms/EditableForm/EditableForm";
+import Button from "../../components/button/Button";
 
-const MyProductsContainer = () => {
+const MyProductsContainer = ({ ...props }) => {
   const params = useSelector(paramsQuery);
   const state = useSelector(stateMyAccount);
   const { myProducts, loading, error } = state;
@@ -23,23 +24,22 @@ const MyProductsContainer = () => {
   }, [dispatch, params]);
 
   const { isShowing, toggle } = useModal();
-  const [productEdit, setProductEdit] = useState(null)
+  const [productEdit, setProductEdit] = useState(null);
   const editCardHandler = useCallback(
     (product) => {
-      setProductEdit(product)
+      setProductEdit(product);
       toggle();
     },
     [toggle]
   );
-  const editProductCb = useCallback((bodyArr) => {
-    editProduct(bodyArr[0], bodyArr[1].id)
-    dispatch(setMyProducts(params))
-    toggle()
-  },[toggle, dispatch, params])
-
-  const resetEditProductCb = useCallback(() => {
-    console.log('hello')
-  },[])
+  const editProductCb = useCallback(
+    (bodyArr) => {
+      editProduct(bodyArr[0], bodyArr[1].id);
+      dispatch(setMyProducts(params));
+      toggle();
+    },
+    [toggle, dispatch, params]
+  );
 
 
   return (
@@ -54,25 +54,26 @@ const MyProductsContainer = () => {
         ) : (
           myProducts.map((p) => (
             <ProductCard key={p.id} product={p}>
-              <ProductCardButton
+              <Button
                 onClickHandler={editCardHandler}
                 title="edit product"
                 product={p}
+                primaryButton={false}
               />
             </ProductCard>
           ))
         )}
       </div>
-      <Modal
-        isShowing={isShowing}
-        hide={toggle}
-        title={"Edit product"}
-        titleButton="edit"
-        productEdit={productEdit}
-        handlerClick={editProductCb}
-        handlerResetCancelClick={resetEditProductCb}
-        resetCancelTitle='reset'
-      />
+      <Modal isShowing={isShowing} hide={toggle} title={"Edit product"}>
+        <EditableForm
+          {...props}
+          titleButton="edit"
+          productEdit={productEdit}
+          handlerClick={editProductCb}
+          resetCancelTitle="reset"
+          primaryButton={false}
+        />
+      </Modal>
     </div>
   );
 };

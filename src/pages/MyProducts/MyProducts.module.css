@@ -11,8 +11,7 @@
   min-height: 300px;
 }
 
-.productsBlock h1,
-.productsBlock button {
+.productsBlock h1 {
   color: #331f53;
 }
 

@@ -8,7 +8,8 @@ import FilterFieldsContainer from "./FilterFields/FilterFieldsContainer";
 import Loader from "../../components/loader/Loader";
 import { paramsQuery, stateProducts } from "../../bus/products/selectors";
 import { selectCartIds } from "../../bus/cart/selectors";
-import ProductCardButton from "../../components/productCard/ProductCardButton";
+import Button from "../../components/button/Button";
+
 
 const ProductsContainer = () => {
   const state = useSelector(stateProducts);
@@ -42,11 +43,12 @@ const ProductsContainer = () => {
         ) : (
           products.map((p) => (
             <ProductCard key={p.id} product={p}>
-              <ProductCardButton
+              <Button
                 onClickHandler={addToCartHandler}
                 title={cartIdsArray.includes(p.id) ? "product added" : "add to cart"}
                 product={p}
                 inCart={cartIdsArray.includes(p.id) ? true : false}
+                primaryButton={true}
               />
             </ProductCard>
           ))

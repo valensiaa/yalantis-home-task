@@ -1,13 +1,17 @@
+import { ButtonStyled } from "../button/ButtonStyled";
 import style from "./Fields.module.css";
+import { PaginationButtonStyled } from "./PaginationButtonStyled";
 
-const PaginationField = ({ pages, currentPage, onPageChanged }) => {
+const PaginationField = ({
+  pages,
+  currentPage,
+  onPageChanged,
+  primaryButton,
+}) => {
   return (
-    <nav
-      className={style.paginationBlock}
-      role="navigation"
-      aria-label="pagination"
-    >
-      <button
+    <nav className={style.paginationBlock}>
+      <ButtonStyled
+        primary={primaryButton}
         disabled={currentPage === 1 ? true : false}
         className={style.paginationPrevious}
         onClick={() => {
@@ -15,21 +19,23 @@ const PaginationField = ({ pages, currentPage, onPageChanged }) => {
         }}
       >
         Previous
-      </button>
+      </ButtonStyled>
       <ul className={style.paginationList}>
         {pages.map((p) => (
-          <li
+          <PaginationButtonStyled
             key={p.id}
+            primary={primaryButton}
             onClick={() => onPageChanged(p)}
             className={
-              currentPage === p ? style.selectedPage : style.pageNumber
+              currentPage === p && style.selectedPage
             }
           >
             {p}
-          </li>
+          </PaginationButtonStyled>
         ))}
       </ul>
-      <button
+      <ButtonStyled
+        primary={primaryButton}
         disabled={currentPage === pages.length ? true : false}
         className={style.paginationNext}
         onClick={() => {
@@ -37,7 +43,7 @@ const PaginationField = ({ pages, currentPage, onPageChanged }) => {
         }}
       >
         Next page
-      </button>
+      </ButtonStyled>
     </nav>
   );
 };

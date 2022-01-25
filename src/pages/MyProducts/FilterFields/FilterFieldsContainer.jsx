@@ -5,7 +5,7 @@ import Select from "react-select";
 import { selectStyles } from "./selectStyles";
 import MinMaxField from "../../../components/fields/MinMaxField";
 import { productsPerPageFilter } from "../../../utils/helpers/createObjSelectPages";
-import { getOrigins } from "../../../bus/products/thunks";
+import { getOrigins } from "../../../bus/myAccount/thunks";
 import PaginationField from "../../../components/fields/PaginationField";
 import {
   setFilteredStrByOrigins,
@@ -98,6 +98,7 @@ const FilterFieldsContainer = () => {
     <div className={style.filterFieldsBlock}>
       <div className={style.filterFields}>
         <MinMaxField
+          inputBorder={false}
           minPrice={minPriceState}
           maxPrice={maxPriceState}
           onHandleMinPrice={handleMinPriceCb}

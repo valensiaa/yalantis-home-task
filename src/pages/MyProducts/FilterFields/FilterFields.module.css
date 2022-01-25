@@ -17,10 +17,13 @@
 }
 .filterButton:hover,
 .resetButton:hover {
-  background-color: #f6c717;
+  background-color: #331f53;
+  color: #fff;
   transition: all 0.3s ease-in-out;
 }
 button.resetButton {
+  border: none;
+  text-transform: uppercase;
   width: 200px;
   height: 38px;
   font-size: 12px;

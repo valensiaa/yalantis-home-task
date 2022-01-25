@@ -3,6 +3,7 @@ import productsReducer from './bus/products/reducer'
 import productInfoReducer from './bus/productInfo/reducer'
 import cartReducer from './bus/cart/reducer'
 import myAccountReducer from './bus/myAccount/reducer'
+import originsReducer from './bus/origins/reducer'
 
 
 export default configureStore({
@@ -10,6 +11,7 @@ export default configureStore({
       products: productsReducer,
       productInfo: productInfoReducer,
       cart: cartReducer,
-      myAccount: myAccountReducer
+      myAccount: myAccountReducer,
+      origins: originsReducer
    }
 })

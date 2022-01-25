@@ -17,7 +17,7 @@ export const setMyProducts = createAsyncThunk(
   }
 );
 
-export const getOrigins = createAsyncThunk("products/getOrigins", async () => {
+export const getOrigins = createAsyncThunk("myAccount/getOrigins", async () => {
   const response = await fetchOrigin();
   return response.data;
 });

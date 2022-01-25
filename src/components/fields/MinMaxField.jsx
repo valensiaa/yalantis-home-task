@@ -1,15 +1,18 @@
 import style from "./Fields.module.css";
+import { MinMaxInput } from "./PaginationButtonStyled";
 
-const MinMaxField = ({ onHandleMinPrice, onHandleMaxPrice, minPrice, maxPrice }) => {
+const MinMaxField = ({ onHandleMinPrice, onHandleMaxPrice, minPrice, maxPrice, inputBorder }) => {
   return (
     <div className={style.minMaxBlock}>
-      <input
+      <MinMaxInput
+        inputBorder={inputBorder}
         type="number"
         value = {minPrice}
         placeholder={"min price"}
         onChange={(e) => onHandleMinPrice(e)}
       />
-      <input
+      <MinMaxInput
+      inputBorder={inputBorder}
         type="number"
         value = {maxPrice}
         placeholder={"max price"}

@@ -1,9 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import style from "./Modal.module.css";
-import EditableForm from "../forms/EditableForm/EditableForm";
 
-const Modal = ({ isShowing, hide, title, ...props }) =>
+const Modal = ({ isShowing, hide, title, children }) =>
   isShowing &&
   ReactDOM.createPortal(
     <React.Fragment>
@@ -13,7 +12,7 @@ const Modal = ({ isShowing, hide, title, ...props }) =>
           <span className={style.modalClose} onClick={() => hide()}>
             X
           </span>
-          <EditableForm {...props} hide={hide} />
+          {children}
         </div>
       </div>
     </React.Fragment>,

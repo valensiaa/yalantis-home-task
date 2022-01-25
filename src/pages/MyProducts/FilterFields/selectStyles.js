@@ -5,7 +5,7 @@ export const selectStyles = {
     boxShadow: state.isFocused ? "none" : "0 0 0 0 #f6c717",
     borderRadius: "0px",
     ":hover": {
-      border: "1px solid #f6c717",
+      border: "1px solid #331f53",
       transition: "border 300ms",
     },
   }),
@@ -15,13 +15,14 @@ export const selectStyles = {
   }),
   multiValue: (provided, state) => ({
     ...provided,
-    backgroundColor: "#f6c717",
+    backgroundColor: "#fff",
   }),
   option: (provided, state) => ({
      ...provided,
      
      ':hover': {
-        backgroundColor: "#f6c717",
+        backgroundColor: "#331f53",
+        color:'#fff',
         opacity: state.isSelected ? 0.5 : 1,
         transition: "all 300ms"
      }
@@ -29,7 +30,8 @@ export const selectStyles = {
   multiValueRemove: (provided, state) => ({
     ...provided,
     ':hover': {
-      backgroundColor: '#f3d46d',
+      backgroundColor: '#5c4c75',
+      color: '#fff',
       transition: "all 300ms"
     },
   })

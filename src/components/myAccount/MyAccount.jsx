@@ -1,21 +1,44 @@
-import { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import NavBar from "../navBar/NavBar";
 import style from "./MyAccount.module.css";
 
 const MyAccount = () => {
+  const container = React.createRef();
+  const containerNav = React.createRef();
 
   const [isShown, setIsShown] = useState(false);
-  const toggleShowNav = () => setIsShown(!isShown);
+
+  const toggleShowNav = useCallback(
+    (e) => {
+      container.current &&
+        !container.current.contains(e.target) &&
+        containerNav.current &&
+        !containerNav.current.contains(e.target) &&
+        setIsShown(false);
+    },
+    [container, containerNav]
+  );
+
+  useEffect(() => {
+    document
+      .querySelector(".app-wrapper")
+      .addEventListener("mousedown", toggleShowNav);
+  }, [toggleShowNav]);
 
   return (
     <div className={style.myAccountBlock}>
-      <button className={style.myAccountButton}
-        onClick={() => toggleShowNav()}
-        //onBlur={() => setIsShown(false)}
+      <button
+        ref={container}
+        className={style.myAccountButton}
+        onClick={() => setIsShown(!isShown)}
       >
         my account
       </button>
-      {isShown && <NavBar/>}   
+      {isShown && (
+        <div ref={containerNav}>
+          <NavBar />
+        </div>
+      )}
     </div>
   );
 };

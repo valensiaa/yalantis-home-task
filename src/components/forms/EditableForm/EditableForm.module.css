@@ -34,18 +34,17 @@ input[type="number"] {
   justify-content: space-between;
 }
 .buttonsModal button {
+  text-transform: uppercase;
   height: 34px;
   max-height: 34px;
-  color: white;
   min-width: 150px;
   flex: 0 0 40%;
-  background-color: #331f53;
 }
-.buttonsModal button:hover,
+/* .buttonsModal button:hover,
 .buttonsModal button:disabled {
   background-color: #5c4c75;
   transition: all 0.3s ease-in-out;
-}
+} */
 .chooseOriginSelect,
 .fieldModal input {
   width: 100%;

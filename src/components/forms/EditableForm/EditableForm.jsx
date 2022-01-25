@@ -1,52 +1,57 @@
-import { useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import style from "./EditableForm.module.css";
 import { Controller, useForm } from "react-hook-form";
 import { selectStylesModal } from "./selectStylesOrigin";
-import ReactSelect from "react-select";
+import Select from "react-select";
 import { schema } from "./schema";
-import { stateMyAccount } from "../../../bus/myAccount/selectors";
+import { ButtonStyled } from "../../button/ButtonStyled";
+import { useDispatch, useSelector } from "react-redux";
+import { stateOrigins } from "../../../bus/origins/selectors";
+import { getOrigins } from "../../../bus/origins/thunks";
 
 const EditableForm = ({
-  handlerResetCancelClick,
   titleButton,
   productEdit,
   handlerClick,
   resetCancelTitle,
+  primaryButton,
+  hide,
 }) => {
-  const state = useSelector(stateMyAccount);
+  const defaultValues =
+    productEdit !== undefined
+      ? {
+          productName: productEdit.name,
+          productPrice: productEdit.price,
+          origin: { value: productEdit.origin, label: productEdit.origin },
+        }
+      : {
+          productName: null,
+          productPrice: null,
+          origin: { value: "", label: "" },
+        };
+
+  const dispatch = useDispatch();
+  const state = useSelector(stateOrigins);
   const { origins } = state;
+
+  const [isFetching, setIsFetching] = useState(false);
+  useEffect(() => {
+    dispatch(getOrigins());
+    setIsFetching(false);
+  }, [isFetching, dispatch]);
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isDirty },
     reset,
+    formState: { errors, isDirty },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  let defaultValues;
-  if (productEdit !== undefined) {
-    console.log(productEdit)
-    defaultValues = {
-      productName: productEdit.name,
-      productPrice: productEdit.price,
-      origin: {value:productEdit.origin, label:productEdit.origin},
-    };
-  } else {
-    defaultValues = {
-      productName: null,
-      productPrice: null,
-      origin: {value:null, label:null},
-    };
-  }
-
-  const [isFetching, setIsFetching] = useState(false);
   const onSubmitHandler = (data) => {
-    console.log('data',data)
     const bodyArr = [
       {
         product: {
@@ -62,9 +67,10 @@ const EditableForm = ({
     handlerClick(bodyArr);
     setIsFetching(false);
   };
-  useEffect(() => {
-    setIsFetching(false);
-  }, [isFetching]);
+
+  const handlerResetCancelClick = () => {
+    productEdit === undefined ? hide() : reset();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -90,16 +96,16 @@ const EditableForm = ({
       <div className={style.fieldModal}>
         <Controller
           name="origin"
+          rules={{ required: true }}
           control={control}
-          defaultValue={defaultValues.origin.value}
+          defaultValue={defaultValues.origin.label}
           shouldUnregister={true}
-          render={({ field: { ref, value, onChange } }) => (
-            <ReactSelect
+          render={({ field: { value, onChange } }) => (
+            <Select
               className={style.chooseOriginSelect}
               styles={selectStylesModal}
-              inputRef={ref}
               options={origins}
-              onChange={onChange}
+              onChange={(e) => onChange(e)}
               value={origins.find((c) => c.value === value)}
               placeholder="choose origin"
             />
@@ -108,12 +114,20 @@ const EditableForm = ({
         <p>{errors.origin?.message}</p>
       </div>
       <div className={style.buttonsModal}>
-        <button disabled={!isDirty || isFetching} type="submit">
+        <ButtonStyled
+          primary={primaryButton}
+          disabled={!isDirty || isFetching}
+          type="submit"
+        >
           {titleButton}
-        </button>
-        <button onClick={() => handlerResetCancelClick()}>
+        </ButtonStyled>
+        <ButtonStyled
+          primary={primaryButton}
+          type="button"
+          onClick={() => handlerResetCancelClick()}
+        >
           {resetCancelTitle}
-        </button>
+        </ButtonStyled>
       </div>
     </form>
   );

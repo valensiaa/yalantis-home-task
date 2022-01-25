@@ -1,3 +1,16 @@
 .valueProduct {
   flex: 0 0 30%;
 }
+.buttonDec,
+.buttonInc {
+  border: none;
+  text-transform: uppercase;
+  background-color: #f6c717;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+}
+.buttonDec:hover,
+.buttonInc:hover {
+  background-color: #f3d46d;
+}

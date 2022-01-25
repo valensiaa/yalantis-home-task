@@ -9,11 +9,11 @@ export const selectStyles = {
       transition: "border 300ms",
     },
   }),
-  placeholder: (provided, state) => ({
+  placeholder: (provided) => ({
     ...provided,
     fontSize: "12px",
   }),
-  multiValue: (provided, state) => ({
+  multiValue: (provided) => ({
     ...provided,
     backgroundColor: "#f6c717",
   }),
@@ -26,7 +26,7 @@ export const selectStyles = {
         transition: "all 300ms"
      }
   }),
-  multiValueRemove: (provided, state) => ({
+  multiValueRemove: (provided) => ({
     ...provided,
     ':hover': {
       backgroundColor: '#f3d46d',

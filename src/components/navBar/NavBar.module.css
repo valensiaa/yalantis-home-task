@@ -4,18 +4,23 @@
   background-color: rgba(255, 255, 255);
   width: 100%;
   box-shadow: 0 11px 16px -3px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(7px);
 }
 .linkBlock {
+  text-align: center;
+  text-transform: uppercase;
   padding: 10px 15px;
-  border-bottom: 1px solid rgba(255, 255, 255);
+  font-size: 14px;
+  cursor: pointer;
 }
 .linkBlock a {
   text-decoration: none;
-  text-transform: capitalize;
+  text-transform: uppercase;
   color: black;
   font-size: 14px;
 }
 .linkBlock:hover {
-  border-bottom: 1px solid #f6c717;
+  background-color: #fff;
   transition: all 0.3s ease-in-out;
 }

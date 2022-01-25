@@ -32,7 +32,6 @@ const Counter = ({ id, countQ }) => {
       <button
         disabled={count <= 1 ? true : false}
         className={style.buttonDec}
-        aria-label="Decrement value"
         onClick={() => onCountChangeDec(id)}
       >
         -
@@ -42,7 +41,6 @@ const Counter = ({ id, countQ }) => {
       </span>
       <button
         className={style.buttonInc}
-        aria-label="Increment value"
         onClick={() => onCountChangeInc(id)}
       >
         +

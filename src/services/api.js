@@ -16,7 +16,6 @@ export const fetchProduct = async (productId) => {
   return await instance.get(`products/${productId}`);
 };
 
-
 export const fetchOrigin = async () => {
   return await instance.get("products-origins");
 };
@@ -32,3 +31,16 @@ export const editProduct = (data, productId ) => {
  .then(response => console.log(response.data))
  .catch(error => console.error('there was an error', error.response.data))
 }
+
+export const checkoutOrder = (data) => {
+  instance.post("orders", data)
+ .then(response => response.data)
+ .catch(error => console.error('there was an error', error.response.data))
+}
+export const fetchOrders = async () => {
+  return await instance.get("orders");
+};
+
+export const fetchOrderDetails = async (orderId) => {
+  return await instance.get(`orders/${orderId}`)
+};

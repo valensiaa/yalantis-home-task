@@ -4,6 +4,8 @@ import ProductInfoContainer from "../../pages/ProductInfo/ProductInfoContainer";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "../Header/Header";
 import MyProductsContainer from "../../pages/MyProducts/MyProductsContainer";
+import OrdersContainer from "../../pages/Orders/OrdersContainer";
+
 
 const MainLayout = () => {
   return (
@@ -14,6 +16,8 @@ const MainLayout = () => {
           <Route path="/cart" component={CartContainer} />
           <Route path="/products/:productId?" component={ProductInfoContainer} />
           <Route path="/myproducts" component={MyProductsContainer} />
+          <Route path="/orders" component={OrdersContainer} />
+          {/* <Route path="/orders/:orderId?" component={OrderItem} /> */}
           <Redirect to="/" />
         </Switch>
       </div>

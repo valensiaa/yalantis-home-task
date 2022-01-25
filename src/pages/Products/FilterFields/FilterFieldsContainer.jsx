@@ -99,6 +99,7 @@ const FilterFieldsContainer = () => {
     <div className={style.filterFieldsBlock}>
       <div className={style.filterFields}>
         <MinMaxField
+          inputBorder={true}
           minPrice={minPriceState}
           maxPrice={maxPriceState}
           onHandleMinPrice={handleMinPriceCb}
@@ -130,6 +131,7 @@ const FilterFieldsContainer = () => {
         currentPage={currentPage}
         productsPerPage={productsPerPage}
         onPageChanged={pageChangedCb}
+        primaryButton={true}
       />
     </div>
   );
