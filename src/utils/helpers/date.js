@@ -16,5 +16,5 @@ const months = [
 export const changeDate = (date) => {
    let curDate = new Date(date)
 
-   return `${curDate.getDay()} ${months[curDate.getMonth()]}`
+   return `${curDate.getDate()} ${months[curDate.getMonth()]}`
 }

@@ -1,0 +1,46 @@
+.orderDetailsContainer {
+  background-color: #fff;
+  overflow-y: auto;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding: 15px;
+}
+.orderProduct {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.orderProductImg img {
+  object-fit: cover;
+  height: 75px;
+}
+
+.orderProductTitle {
+  flex: 0 1 50%;
+}
+.orderProductTitle a {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: black;
+}
+.orderProductTitle p {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+.orderProductTitle a:hover {
+  color: #f6c717;
+  transition: all 0.3s ease;
+}
+.orderProductTitle span {
+  color: #f6c717;
+  text-transform: capitalize;
+}
+.sumOrder {
+  align-self: flex-end;
+  padding-right: 10px;
+}

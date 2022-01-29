@@ -1,0 +1,31 @@
+.filterFieldsBlock {
+  display: flex;
+  flex-direction: column;
+  width: 1150px;
+  padding-left: 15px;
+}
+.filterFields {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 5px;
+}
+.filterButton {
+  flex: 0 0 150px;
+  font-size: 12px;
+  background-color: #fff;
+}
+.filterButton:hover,
+.resetButton:hover {
+  background-color: #331f53;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+button.resetButton {
+  border: none;
+  text-transform: uppercase;
+  width: 200px;
+  height: 38px;
+  font-size: 12px;
+  background-color: #fff;
+}

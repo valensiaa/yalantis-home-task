@@ -24,5 +24,7 @@ button.resetButton {
   width: 200px;
   height: 38px;
   font-size: 12px;
+  text-transform: uppercase;
+  border: none;
   background-color: #fff;
 }

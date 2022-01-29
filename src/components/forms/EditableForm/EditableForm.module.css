@@ -1,0 +1,69 @@
+.fieldModal .modalPrice,
+.fieldModal .modalNameProduct {
+  font-size: 16px;
+  height: 38px;
+  max-height: 38px;
+  padding: 0 0 0 10px;
+  border: 1px solid #ffffff;
+  margin-top: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.fieldModal input:focus,
+.fieldModal input:hover {
+  border: 1px solid #5c4c75;
+  transition: all 0.3s ease-in-out;
+}
+.fieldModal input::placeholder {
+  font-size: 12px;
+}
+.buttonsModal {
+  margin-top: 25px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.buttonsModal button {
+  text-transform: uppercase;
+  height: 34px;
+  max-height: 34px;
+  min-width: 150px;
+  flex: 0 0 40%;
+}
+/* .buttonsModal button:hover,
+.buttonsModal button:disabled {
+  background-color: #5c4c75;
+  transition: all 0.3s ease-in-out;
+} */
+.chooseOriginSelect,
+.fieldModal input {
+  width: 100%;
+}
+.chooseOriginSelect {
+  margin-top: 5px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fieldModal {
+  width: 100%;
+}
+.fieldModal p {
+  margin-top: 5px;
+  color: #7a074a;
+  font-size: 11px;
+}

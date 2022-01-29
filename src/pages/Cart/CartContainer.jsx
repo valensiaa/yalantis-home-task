@@ -7,7 +7,12 @@ import {
   sumProducts,
   nProducts,
   groupedProducts,
+  productsForOrder,
+  stateCart,
 } from "../../bus/cart/selectors";
+import { Redirect } from "react-router";
+import { checkOutThunk } from "../../bus/cart/thunks";
+import { ButtonStyled } from "../../components/button/ButtonStyled";
 
 const CartContainer = () => {
   const dispatch = useDispatch();
@@ -15,6 +20,8 @@ const CartContainer = () => {
   const nCartProducts = useSelector(nProducts);
   const sumCartProducts = useSelector(sumProducts);
   const groupedProductsInCart = useSelector(groupedProducts);
+  const state = useSelector(stateCart);
+  const { redirect } = state;
 
   const removeFromCartCb = useCallback(
     (id) => {
@@ -22,6 +29,15 @@ const CartContainer = () => {
     },
     [dispatch]
   );
+
+  const dataCartForOrder = useSelector(productsForOrder);
+  const checkoutCb = useCallback(() => {
+    checkOutThunk(dataCartForOrder, dispatch);
+  }, [dispatch, dataCartForOrder]);
+
+  if (redirect) {
+    return <Redirect to={redirect} />;
+  }
 
   return (
     <div className={style.cartBlock}>
@@ -42,6 +58,11 @@ const CartContainer = () => {
         Currently {nCartProducts} products in the cart with summary
         <span> {sumCartProducts}$</span>
       </p>
+      {nCartProducts !== 0 && (
+        <ButtonStyled primary onClick={() => checkoutCb()} className={style.productsCheckout}>
+          Checkout
+        </ButtonStyled>
+      )}
     </div>
   );
 };

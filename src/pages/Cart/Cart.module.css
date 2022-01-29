@@ -26,3 +26,8 @@
 .productsSum span {
   color: #000;
 }
+.productsCheckout {
+  width: 255px !important;
+  align-self: flex-end;
+  border: none;
+}

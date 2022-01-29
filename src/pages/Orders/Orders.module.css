@@ -1,0 +1,46 @@
+.ordersBlock {
+  background-color: #f4f4f4;
+  width: 1200px;
+  text-align: center;
+  min-height: 300px;
+  padding-bottom: 30px;
+}
+.ordersList {
+  background-color: #fff;
+  width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  text-align: left;
+}
+.ordersList ul {
+  list-style-type: none;
+  margin: 0px;
+  padding-left: 0px;
+}
+.orderItem {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.orderNumber {
+  cursor: pointer;
+}
+.orderNumber:hover {
+  color: #f6c717;
+  transition: all 0.3s ease;
+}
+.ordersList h2 {
+  text-transform: uppercase;
+  color: #f6c717;
+}
+.orderListItem:first-child {
+  padding-top: 0px;
+}
+.orderListItem {
+  padding-top: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f3e9c6;
+}
+.orderNumber {
+  font-weight: 500;
+}
