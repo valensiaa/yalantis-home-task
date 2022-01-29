@@ -18,11 +18,6 @@ export const myAccountSlice = createSlice({
     },
   },
   reducers: {
-    editMyProduct: {
-       reducer: (state, action) => {
-         console.log(action.payload)
-      }
-    },
     setFilteredStrByOrigins: {
       reducer: (state, action) => {
         state.filters.filteredByOrigins = action.payload;

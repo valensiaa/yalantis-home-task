@@ -9,4 +9,3 @@ export const paramsQuery = createSelector(
 );
 
 export const myProductsSelector = createSelector(stateProducts, products => products.filter(p => p.isEditable === true))
-//export const idsArray = createSelector(stateMyAccount, products => products.myProducts.map(p => p.id))

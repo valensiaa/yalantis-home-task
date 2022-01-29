@@ -22,13 +22,13 @@ export const fetchOrigin = async () => {
 
 export const addProduct = (data) => {
   instance.post("products", data)
- .then(response => console.log(response.data))
+ .then(response => response.data)
  .catch(error => console.error('there was an error', error.response.data))
 }
 
 export const editProduct = (data, productId ) => {
   instance.patch(`products/${productId}`, data)
- .then(response => console.log(response.data))
+ .then(response => response.data)
  .catch(error => console.error('there was an error', error.response.data))
 }
 

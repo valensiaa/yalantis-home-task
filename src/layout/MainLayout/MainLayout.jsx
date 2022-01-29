@@ -17,7 +17,6 @@ const MainLayout = () => {
           <Route path="/products/:productId?" component={ProductInfoContainer} />
           <Route path="/myproducts" component={MyProductsContainer} />
           <Route path="/orders" component={OrdersContainer} />
-          {/* <Route path="/orders/:orderId?" component={OrderItem} /> */}
           <Redirect to="/" />
         </Switch>
       </div>

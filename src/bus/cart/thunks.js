@@ -15,7 +15,7 @@ export const checkOutThunk = (data, dispatch) => {
       }
     }
     checkoutOrder(body)
-    dispatch(redirectAfterCheckOut("/orders"));
     dispatch(removeProductsAfterCheckout())
+    dispatch(redirectAfterCheckOut("/orders"));
 }
 

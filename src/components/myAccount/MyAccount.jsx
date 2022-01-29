@@ -1,45 +1,44 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
+import useModal from "../../hooks/useModal";
+import { addProduct } from "../../services/api";
+import DropDown from "../dropDown/DropDown";
+import EditableForm from "../forms/EditableForm/EditableForm";
+import Modal from "../modal/Modal";
 import NavBar from "../navBar/NavBar";
 import style from "./MyAccount.module.css";
 
 const MyAccount = () => {
-  const container = React.createRef();
-  const containerNav = React.createRef();
+  const { isShowing, toggle, onShow } = useModal();
 
-  const [isShown, setIsShown] = useState(false);
-
-  const toggleShowNav = useCallback(
-    (e) => {
-      container.current &&
-        !container.current.contains(e.target) &&
-        containerNav.current &&
-        !containerNav.current.contains(e.target) &&
-        setIsShown(false);
+  const addProductCb = useCallback(
+    (bodyArr) => {
+      addProduct(bodyArr[0]);
+      toggle();
     },
-    [container, containerNav]
+    [toggle]
   );
 
-  useEffect(() => {
-    document
-      .querySelector(".app-wrapper")
-      .addEventListener("mousedown", toggleShowNav);
-  }, [toggleShowNav]);
-
   return (
-    <div className={style.myAccountBlock}>
-      <button
-        ref={container}
-        className={style.myAccountButton}
-        onClick={() => setIsShown(!isShown)}
+    <>
+      <DropDown
+        trigger={(toggle) => (
+          <button className={style.myAccountButton} onClick={toggle}>
+            my account
+          </button>
+        )}
       >
-        my account
-      </button>
-      {isShown && (
-        <div ref={containerNav}>
-          <NavBar />
-        </div>
-      )}
-    </div>
+        {(onClose) => <NavBar onClick={onClose} onOpenModal={onShow} />}
+      </DropDown>
+      <Modal hide={toggle} isShowing={isShowing} title={"Add product"}>
+        <EditableForm
+          hide={toggle}
+          titleButton="submit"
+          resetCancelTitle="cancel"
+          handlerClick={addProductCb}
+          primaryButton={true}
+        />
+      </Modal>
+    </>
   );
 };
 export default MyAccount;

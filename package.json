@@ -26,11 +26,16 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "resolutions": {
+  "//": "See https://github.com/facebook/create-react-app/issues/11773",
+  "react-error-overlay": "6.0.9"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -48,5 +53,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies":{
+    "react-error-overlay": "6.0.9"
+}
 }

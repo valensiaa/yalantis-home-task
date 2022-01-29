@@ -13,7 +13,6 @@ const Order = ({ orderId }) => {
       .then((data) => setOrderDetails(data.pieces));
   }, [orderId]);
 
-  console.log(orderDetails)
   const ordersum = orderDetails.map((item)=>item.count * item.product.price).reduce((prev, curr) => prev + curr, 0)
 
   return (
