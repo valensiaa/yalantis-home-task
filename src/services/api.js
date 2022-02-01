@@ -1,5 +1,6 @@
 import * as axios from "axios";
 
+
 const instance = axios.create({
   baseURL: "https://yalantis-react-school-api.yalantis.com/api/v1/",
   headers: {
@@ -33,14 +34,12 @@ export const editProduct = (data, productId ) => {
 }
 
 export const checkoutOrder = (data) => {
-  instance.post("orders", data)
- .then(response => response.data)
- .catch(error => console.error('there was an error', error.response.data))
+  return instance.post("orders", data)
 }
+
 export const fetchOrders = async () => {
   return await instance.get("orders");
 };
-
 export const fetchOrderDetails = async (orderId) => {
   return await instance.get(`orders/${orderId}`)
 };

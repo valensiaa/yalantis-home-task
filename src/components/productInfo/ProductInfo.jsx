@@ -1,6 +1,5 @@
 import style from "./ProductInfo.module.css";
 import productImg from "./../../assets/default-product.png";
-import { ButtonStyled } from "../button/ButtonStyled";
 
 const ProductInfo = ({ addToCart, changeDate, productInfo, isInArray }) => {
 
@@ -29,9 +28,9 @@ const ProductInfo = ({ addToCart, changeDate, productInfo, isInArray }) => {
             Price: {productInfo.price}$
           </div>
         </div>
-        <ButtonStyled disabled={isInArray} className={style.productInfoAddToCart} onClick={addToCart}>
+        <button disabled={isInArray} className={style.productInfoAddToCart} onClick={addToCart}>
           {isInArray ? 'product added' : 'add to cart'}
-        </ButtonStyled>
+        </button>
       </div>
     </div>
   );

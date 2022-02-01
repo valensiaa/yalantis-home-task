@@ -7,30 +7,30 @@ export const productsSlice = createSlice({
     products: [],
     loading: false,
     error: "",
-    origins: [],
+    originsArr: [],
     totalProductsCount: 0,
     filters: {
-      filteredByOrigins: "",
-      currentPage: 1,
-      productsPerPage: 20,
-      minPrice: null,
-      maxPrice: null,
+      origins: "",
+      page: 1,
+      perPage: 20,
+      minPrice: "",
+      maxPrice: "",
     },
   },
   reducers: {
     setFilteredStrByOrigins: {
       reducer: (state, action) => {
-        state.filters.filteredByOrigins = action.payload;
+        state.filters.origins = action.payload;
       },
       prepare: (params) => {
         return { payload: params.map((o) => o.value).join(",") };
       },
     },
     setCurrentPage: (state, action) => {
-      state.filters.currentPage = action.payload;
+      state.filters.page = action.payload;
     },
     setProductsPerPage: (state, action) => {
-      state.filters.productsPerPage = action.payload;
+      state.filters.perPage = action.payload;
     },
     setMinPrice: (state, action) => {
       state.filters.minPrice = action.payload;
@@ -57,7 +57,7 @@ export const productsSlice = createSlice({
         state.loading = false;
       })
       .addCase(getOrigins.fulfilled, (state, action) => {
-        state.origins = action.payload.items.map((o) => ({
+        state.originsArr = action.payload.items.map((o) => ({
           value: o.value,
           label: o.displayName,
         }));

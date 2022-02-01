@@ -11,17 +11,25 @@ import Modal from "../../components/modal/Modal";
 import { editProduct } from "../../services/api";
 import EditableForm from "../../components/forms/EditableForm/EditableForm";
 import Button from "../../components/button/Button";
+import { useSearchParams } from "react-router-dom";
 
 const MyProductsContainer = ({ ...props }) => {
   const params = useSelector(paramsQuery);
   const state = useSelector(stateMyAccount);
   const { myProducts, loading, error } = state;
-
   const dispatch = useDispatch();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const paramsV = Object.fromEntries([...searchParams]);
   useEffect(() => {
-    dispatch(setMyProducts(params));
-  }, [dispatch, params]);
+    setSearchParams(paramsV);
+    dispatch(setMyProducts(paramsV));
+  }, [dispatch, searchParams]);
+
+  // Change logic according to HM#4
+  // useEffect(() => {
+  //   dispatch(setMyProducts(params));
+  // }, [dispatch, params]);
 
   const { isShowing, toggle } = useModal();
   const [productEdit, setProductEdit] = useState(null);
@@ -40,7 +48,6 @@ const MyProductsContainer = ({ ...props }) => {
     },
     [toggle, dispatch, params]
   );
-
 
   return (
     <div className={style.productsBlock}>

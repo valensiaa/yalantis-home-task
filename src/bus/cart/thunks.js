@@ -1,6 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { checkoutOrder, fetchOrders } from "../../services/api";
-import { redirectAfterCheckOut, removeProductsAfterCheckout } from "./reducer";
+import { fetchOrders } from "../../services/api";
+
+// Change logic according to HM#4
+//import { checkoutOrder} from "../../services/api";
+
+// Change logic according to HM#4
+//import { redirectAfterCheckOut, removeProductsAfterCheckout } from "./reducer";
 
 
 export const getOrders = createAsyncThunk("cart/getOrders", async () => {
@@ -8,14 +13,18 @@ export const getOrders = createAsyncThunk("cart/getOrders", async () => {
   return response.data;
 });
 
-export const checkOutThunk = (data, dispatch) => {
-    const body = {
-      order: {
-        pieces: data
-      }
-    }
-    checkoutOrder(body)
-    dispatch(removeProductsAfterCheckout())
-    dispatch(redirectAfterCheckOut("/orders"));
-}
+
+// Change logic according to HM#4
+
+// export const checkOutThunk = (data, dispatch) => {
+//     const body = {
+//       order: {
+//         pieces: data
+//       }
+//     }
+//     checkoutOrder(body)
+//     dispatch(redirectAfterCheckOut("/orders"));
+//     dispatch(removeProductsAfterCheckout())
+// }
+
 
