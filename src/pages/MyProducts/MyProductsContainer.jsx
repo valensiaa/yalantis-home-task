@@ -14,7 +14,7 @@ import Button from "../../components/button/Button";
 import { useSearchParams } from "react-router-dom";
 
 const MyProductsContainer = ({ ...props }) => {
-  const params = useSelector(paramsQuery);
+  //const params = useSelector(paramsQuery);
   const state = useSelector(stateMyAccount);
   const { myProducts, loading, error } = state;
   const dispatch = useDispatch();
@@ -23,6 +23,8 @@ const MyProductsContainer = ({ ...props }) => {
   const paramsV = Object.fromEntries([...searchParams]);
   useEffect(() => {
     setSearchParams(paramsV);
+  }, []);
+   useEffect(() => {
     dispatch(setMyProducts(paramsV));
   }, [dispatch, searchParams]);
 
@@ -43,10 +45,10 @@ const MyProductsContainer = ({ ...props }) => {
   const editProductCb = useCallback(
     (bodyArr) => {
       editProduct(bodyArr[0], bodyArr[1].id);
-      dispatch(setMyProducts(params));
+      dispatch(setMyProducts(paramsV));
       toggle();
     },
-    [toggle, dispatch, params]
+    [toggle, dispatch, paramsV]
   );
 
   return (
