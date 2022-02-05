@@ -1,7 +1,7 @@
 import style from "./Fields.module.css";
 import { MinMaxInput } from "./PaginationButtonStyled";
 
-const MinMaxField = ({ refMinPrice, onHandleMinPrice, onHandleMaxPrice, minPrice, maxPrice, inputBorder }) => {
+const MinMaxField = ({ onHandleMinPrice, onHandleMaxPrice, minPrice, maxPrice, inputBorder }) => {
   return (
     <div className={style.minMaxBlock}>
       <MinMaxInput

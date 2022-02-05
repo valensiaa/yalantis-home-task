@@ -17,12 +17,8 @@ const ProductsContainer = () => {
   const { products, loading, error } = state;
   const dispatch = useDispatch();
 
-  const [searchParams, setSearchParams] = useSearchParams(); 
+  const [searchParams] = useSearchParams(); 
   const paramsV = Object.fromEntries([...searchParams]);
-  
-  useEffect(() => {
-      setSearchParams(paramsV);
-  },[]);
 
   useEffect(() => {
     dispatch(getProducts(paramsV));
@@ -40,7 +36,7 @@ const ProductsContainer = () => {
   return (
     <div className={style.productsBlock}>
       <h1>Products</h1>
-      <FilterFieldsContainer paramsFromQuery = {paramsV}/>
+      <FilterFieldsContainer/>
       <div className={style.productsItems}>
         {error !== "" ? (
           <div className={style.errorMessage}>{error}</div>

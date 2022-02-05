@@ -1,18 +1,36 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useRef, useState } from "react";
 
-export const useDebounce = (value, delay) => {
-   const [debounceValue, setDebounceValue] = useState(value)
+// // export const useDebounce = (func, delay, cleanUp=false) => {
+// //    const timeoutRef = useRef()
 
-   useEffect(() => {
-      const handler = setTimeout(()=> {
-         setDebounceValue(value)
-      }, delay)
+// //    const clearTimer = () => {
+// //       if(timeoutRef.current) {
+// //       clearTimeout(timeoutRef.current)
+// //       timeoutRef.current = undefined
+// //       }
+// //    }
+// //     useEffect(() => (cleanUp ? clearTimer : undefined), [cleanUp])
 
-      return () => {
-         clearTimeout(handler)
-      }
-   }, [value, delay])
+// //     return (...args) => {
+// //        clearTimer()
+// //        timeoutRef.current = setTimeout(() => func(...args), delay)
+// //     }  
 
 
-   return debounceValue
-}
+// // }
+
+// export const useDebounce = (value, delay) => {
+//    const [debounceValue, setDebounceValue] = useState(value)
+
+//    useEffect(() => {
+//       const handler = setTimeout(()=> {
+//          setDebounceValue(value)
+//       }, delay)
+
+//       return () => {
+//          clearTimeout(handler)
+//       }
+//    }, [value, delay])
+
+//    return debounceValue
+// }

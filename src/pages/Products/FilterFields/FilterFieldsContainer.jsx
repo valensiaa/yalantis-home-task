@@ -7,7 +7,8 @@ import MinMaxField from "../../../components/fields/MinMaxField";
 import { productsPerPageFilter } from "../../../utils/helpers/createObjSelectPages";
 import { getOrigins } from "../../../bus/products/thunks";
 import PaginationField from "../../../components/fields/PaginationField";
-import { useDebounce } from "../../../hooks/useDebounce";
+//import { useDebounce } from "../../../hooks/useDebounce";
+import debounce from "lodash.debounce";
 import {
   setFilteredStrByOrigins,
   setMinPrice,
@@ -19,11 +20,24 @@ import {
 import { stateProducts } from "../../../bus/products/selectors";
 import { useSearchParams } from "react-router-dom";
 
+const debouncedMinInput = debounce(
+  (value, dispatch) => dispatch(setMinPrice(value)),
+  1000
+);
+const debouncedMaxInput = debounce(
+  (value, dispatch) => dispatch(setMaxPrice(value)),
+  1000
+);
+const debouncedOrigins = debounce(
+  (value, dispatch) => dispatch(setFilteredStrByOrigins(value)),
+  1000
+);
+
 const FilterFieldsContainer = () => {
   const dispatch = useDispatch();
   const state = useSelector(stateProducts);
   const { originsArr, totalProductsCount } = state;
-  const { page, perPage, minPrice, maxPrice, origins } = state.filters;
+  const { page, perPage, origins } = state.filters;
 
   let pagesCount = Math.ceil(totalProductsCount / perPage);
   let pages = [];
@@ -38,92 +52,98 @@ const FilterFieldsContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const paramsFromQuery = Object.fromEntries([...searchParams]);
 
-  const defaultValueOrigins = !paramsFromQuery.origins
+  const originsFromQ = searchParams.get("origins");
+  const pageFromQ = searchParams.get("page");
+  const perPageFromQ = searchParams.get("perPage");
+  const minPriceFromQ = searchParams.get("minPrice");
+  const maxPriceFromQ = searchParams.get("maxPrice");
+
+
+  const defaultValueOrigins = !originsFromQ
     ? origins.split(",").map((o) => ({
         value: o,
         label: o.charAt(0).toUpperCase() + o.slice(1),
       }))
-    : paramsFromQuery.origins.split(",").map((o) => ({
+    : originsFromQ.split(",").map((o) => ({
         value: o,
         label: o.charAt(0).toUpperCase() + o.slice(1),
       }));
 
-  const [selectStateOrigin, setSelectStateOrigin] =
-    useState(defaultValueOrigins);
-  const [currentPageState, setCurrentPageState] = useState(
-    paramsFromQuery.page ?? page
-  );
-  const [selectStatePerPage, setSelectStatePerPage] = useState(
-    paramsFromQuery.perPage ?? perPage
-  );
+
+  const [currentPageInput, setCurrentPageInput] = useState(!pageFromQ ? 1 : +pageFromQ);
+  const [perPageInput, setPerPageInput] = useState(!perPageFromQ ? 20 : +perPageFromQ);
   const [minPriceState, setMinPriceState] = useState(
-    paramsFromQuery.minPrice ?? minPrice
+    !minPriceFromQ ? "" : minPriceFromQ
   );
-  const [maxPriceState, setMaxPriceState] = useState(
-    paramsFromQuery.maxPrice ?? maxPrice
+   const [maxPriceState, setMaxPriceState] = useState(
+    !maxPriceFromQ ? "" : maxPriceFromQ
   );
 
-
-  const debouncedMinInput = useDebounce(minPriceState, 1000);
-  const debouncedMaxInput = useDebounce(maxPriceState, 1000);
-  const debouncedOrigins = useDebounce(selectStateOrigin, 1000);
-  useEffect(() => {
-    debouncedMinInput && dispatch(setMinPrice(debouncedMinInput));
-    debouncedMaxInput && dispatch(setMaxPrice(debouncedMaxInput));
-    debouncedOrigins && dispatch(setFilteredStrByOrigins(debouncedOrigins));
-    dispatch(setProductsPerPage(selectStatePerPage));
-    dispatch(setCurrentPage(currentPageState));
-  }, [
-    searchParams,
-    debouncedOrigins,
-    debouncedMinInput,
-    debouncedMaxInput,
-    selectStatePerPage,
-    currentPageState,
-    dispatch,
-  ]);
+    const [selectStateOrigin, setSelectStateOrigin] = useState(defaultValueOrigins);
 
 
   useEffect(() => {
-    setSearchParams(state.filters);
-  }, [state.filters, setSearchParams]);
-
-  useEffect(() => {
-    pagesCount && +page > pagesCount && dispatch(setCurrentPage(1));
+    pagesCount && page > pagesCount && setCurrentPageInput(1);
   }, [pagesCount, dispatch, page]);
 
+
   const handleMaxPriceCb = useCallback((e) => {
-    const value = +e.currentTarget.value;
-    setMaxPriceState(value);
-  }, []);
+      const value = +e.currentTarget.value;
+      setMaxPriceState(value)
+      setSearchParams({ ...paramsFromQuery, maxPrice: value });
+      debouncedMaxInput(maxPriceState, dispatch)
+    },
+    [ setSearchParams, dispatch, paramsFromQuery, maxPriceState]
+  );
 
   const handleMinPriceCb = useCallback((e) => {
-    const value = +e.currentTarget.value;
-    setMinPriceState(value);
-  }, []);
+      const value = +e.currentTarget.value;
+      setMinPriceState(value)
+      setSearchParams({ ...paramsFromQuery, minPrice: value });
+      debouncedMinInput(value, dispatch);
+    },
+    [setSearchParams, paramsFromQuery, dispatch]
+  );
 
   const pageChangedCb = useCallback((currentPage) => {
-    setCurrentPageState(currentPage);
-  }, []);
+      setCurrentPageInput(currentPage);
+      setSearchParams({ ...paramsFromQuery, page: currentPage, perPage:perPageFromQ ?? perPage });
+      dispatch(setCurrentPage(currentPageInput));
+    },
+    [paramsFromQuery,setSearchParams, perPage, perPageFromQ, dispatch, currentPageInput]
+  );
+
+  const changePerPage = useCallback(
+    (e) => {
+      setPerPageInput(e.value)
+      setSearchParams({ ...paramsFromQuery, perPage: e.value });
+      dispatch(setProductsPerPage(perPageInput));
+    },
+    [setSearchParams, dispatch, perPageInput, paramsFromQuery]
+  );
 
   const onChangeSelectOrigin = (e) => {
-    setSelectStateOrigin(e);
+    setSelectStateOrigin(e)
+    setSearchParams({
+      ...paramsFromQuery,
+      origins: e.map((o) => o.value).join(","),
+    });
+    debouncedOrigins(e, dispatch);
   };
 
-  const onReset =() => {
+  const onReset = () => {
     const clearFilters = {
       origins: "",
       page: 1,
       perPage: 20,
       minPrice: "",
       maxPrice: "",
-    }
-    setSelectStateOrigin("");
-    setCurrentPageState(1);
-    setSelectStatePerPage(20);
-    setMinPriceState("");
-    setMaxPriceState("");
+    };
+    setSearchParams(clearFilters);
     dispatch(reset(clearFilters));
+    setMinPriceState('')
+    setMaxPriceState('')
+    setPerPageInput(20)
   };
 
   return (
@@ -138,7 +158,7 @@ const FilterFieldsContainer = () => {
         />
         <Select
           isMulti
-          value={origins === "" ? "" : selectStateOrigin}
+          value={origins === '' ? '' :selectStateOrigin}
           styles={selectStyles}
           name="origin"
           options={originsArr}
@@ -148,12 +168,14 @@ const FilterFieldsContainer = () => {
         <Select
           styles={selectStyles}
           value={
-            +perPage === 20 ? "" : productsPerPageFilter([selectStatePerPage])
+            perPageInput === 20
+              ? ""
+              : productsPerPageFilter([perPageInput])
           }
           name="pages"
           options={productsPerPageFilter([10, 25, 50])}
           placeholder="products per page..."
-          onChange={(e) => setSelectStatePerPage(e.value)}
+          onChange={(e) => changePerPage(e)}
         />
         <button className={style.resetButton} onClick={onReset}>
           reset
@@ -161,7 +183,7 @@ const FilterFieldsContainer = () => {
       </div>
       <PaginationField
         pages={pages}
-        currentPage={+currentPageState}
+        currentPage={currentPageInput}
         onPageChanged={pageChangedCb}
         primaryButton={true}
       />
