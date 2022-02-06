@@ -10,7 +10,7 @@ import Modal from "../../components/modal/Modal";
 import Order from "../../components/order/Order";
 import { changeDate } from "../../utils/helpers/date";
 import { getOrdersActions } from "../../bus/cart/constants";
-import { setLoading } from "../../bus/cart/reducer";
+import { setEmptyRedirect } from "../../bus/cart/reducer";
 
 const OrdersContainer = ({ ...props }) => {
   const state = useSelector(stateCart);
@@ -23,24 +23,23 @@ const OrdersContainer = ({ ...props }) => {
   const showOrderHandler = useCallback(
     (id) => {
       toggle();
-      dispatch(setLoading(true))
       setOrderId(id);      
-      dispatch(setLoading(false))
     },
-    [toggle, dispatch]
+    [toggle]
   );
 
   useEffect(() => {
     dispatch(getOrdersActions.init());
-    // Change logic according to HM#4
-    //dispatch(getOrders());
   }, [dispatch]);
 
   useEffect(() => {
     if (redirect) {    
       showOrderHandler(redirect.orderId);
     }
-  }, [redirect]);
+    return () => {
+      dispatch(setEmptyRedirect())
+    };
+  }, [dispatch, redirect]);
 
   return (
     <div className={style.ordersBlock}>
@@ -70,7 +69,7 @@ const OrdersContainer = ({ ...props }) => {
       )}
 
       <Modal hide={toggle} isShowing={isShowing} title={`Order №${orderId}`}>
-        <Order {...props} orderId={orderId} loading={loading} />
+        <Order {...props} orderId={orderId}/>
       </Modal>
     </div>
   );

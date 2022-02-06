@@ -3,9 +3,8 @@ import { fetchOrderDetails } from "../../services/api";
 import style from "./Order.module.css";
 import productImg from "../../assets/default-product.png";
 import { Link } from "react-router-dom";
-import Loader from "../loader/Loader";
 
-const Order = ({ orderId, loading }) => {
+const Order = ({ orderId }) => {
   const [orderDetails, setOrderDetails] = useState([]);
 
   useEffect(() => {
@@ -20,9 +19,7 @@ const Order = ({ orderId, loading }) => {
 
   return (
     <div className={style.orderDetailsContainer}>
-      {loading ? (
-        <Loader />
-      ) : (
+      {
         orderDetails.map((p) => (
           <div key={p.id} className={style.orderProduct}>
             <div className={style.orderProductImg}>
@@ -44,7 +41,7 @@ const Order = ({ orderId, loading }) => {
             </div>
           </div>
         ))
-      )}
+      }
 
       <div className={style.sumOrder}>
         Summary <b>{ordersum}$</b>

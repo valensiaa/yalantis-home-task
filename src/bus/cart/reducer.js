@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { checkoutActions, getOrdersActions } from "./constants";
-//import { getOrders } from './thunks';
-
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -34,8 +32,8 @@ export const cartSlice = createSlice({
         (obj) => obj.id !== action.payload
       );
     },
-    setLoading: (state, action) => {
-      state.loading = action.payload
+    setEmptyRedirect: (state) => {
+      state.redirect = null
     }
     // Change logic according to HM#4
     // redirectAfterCheckOut: (state, action) => {
@@ -48,10 +46,9 @@ export const cartSlice = createSlice({
         state.loading = true;
       })
       .addCase(checkoutActions.success, (state, action) => {
-        const {items, stringRedirect} = action.payload
+        const {stringRedirect} = action.payload
         state.loading = false;
         state.redirect = stringRedirect
-        state.orders = items;
         state.cartProducts = []
       })
       .addCase(checkoutActions.error, (state, action) => {
@@ -83,11 +80,9 @@ export const cartSlice = createSlice({
 });
 
 export const {
-  //removeProductsAfterCheckout,
-  setLoading,
+  setEmptyRedirect,
   addToCart,
   setCurrentCountForId,
   removeFromCart,
-  //redirectAfterCheckOut,
 } = cartSlice.actions;
 export default cartSlice.reducer;
