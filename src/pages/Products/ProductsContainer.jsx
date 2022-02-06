@@ -11,8 +11,7 @@ import { selectCartIds } from "../../bus/cart/selectors";
 import Button from "../../components/button/Button";
 import { useSearchParams } from "react-router-dom";
 
-const ProductsContainer = () => {
-  
+const ProductsContainer = () => {  
   const state = useSelector(stateProducts);
   const { products, loading, error } = state;
   const dispatch = useDispatch();

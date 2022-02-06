@@ -34,6 +34,9 @@ export const cartSlice = createSlice({
         (obj) => obj.id !== action.payload
       );
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload
+    }
     // Change logic according to HM#4
     // redirectAfterCheckOut: (state, action) => {
     //   state.redirect = action.payload
@@ -49,11 +52,11 @@ export const cartSlice = createSlice({
         state.loading = false;
         state.redirect = stringRedirect
         state.orders = items;
+        state.cartProducts = []
       })
       .addCase(checkoutActions.error, (state, action) => {
         state.error = action;
         state.loading = false;
-        console.log("error", action);
       })
       .addCase(getOrdersActions.start, (state) => {
         state.loading = true;
@@ -81,6 +84,7 @@ export const cartSlice = createSlice({
 
 export const {
   //removeProductsAfterCheckout,
+  setLoading,
   addToCart,
   setCurrentCountForId,
   removeFromCart,

@@ -3,8 +3,9 @@ import { fetchOrderDetails } from "../../services/api";
 import style from "./Order.module.css";
 import productImg from "../../assets/default-product.png";
 import { Link } from "react-router-dom";
+import Loader from "../loader/Loader";
 
-const Order = ({ orderId }) => {
+const Order = ({ orderId, loading }) => {
   const [orderDetails, setOrderDetails] = useState([]);
 
   useEffect(() => {
@@ -13,32 +14,41 @@ const Order = ({ orderId }) => {
       .then((data) => setOrderDetails(data.pieces));
   }, [orderId]);
 
-  const ordersum = orderDetails.map((item)=>item.count * item.product.price).reduce((prev, curr) => prev + curr, 0)
+  const ordersum = orderDetails
+    .map((item) => item.count * item.product.price)
+    .reduce((prev, curr) => prev + curr, 0);
 
   return (
     <div className={style.orderDetailsContainer}>
-      {orderDetails.map((p) => (
-        <div key={p.id} className={style.orderProduct}>
-          <div className={style.orderProductImg}>
-            <Link to={"/products/" + p.product.id}>
-              <img src={productImg} alt="product" />
-            </Link>
+      {loading ? (
+        <Loader />
+      ) : (
+        orderDetails.map((p) => (
+          <div key={p.id} className={style.orderProduct}>
+            <div className={style.orderProductImg}>
+              <Link to={"/products/" + p.product.id}>
+                <img src={productImg} alt="product" />
+              </Link>
+            </div>
+            <div className={style.orderProductTitle}>
+              <Link to={"/products/" + p.product.id}>
+                <p>{p.product.name}</p>
+              </Link>
+              <span>{p.product.origin}</span>
+            </div>
+            <div>
+              <span>{p.count}</span>
+            </div>
+            <div>
+              <span>{p.product.price}$</span>
+            </div>
           </div>
-          <div className={style.orderProductTitle}>
-            <Link to={"/products/" + p.product.id}>
-              <p>{p.product.name}</p>
-            </Link>
-            <span>{p.product.origin}</span>
-          </div>
-          <div>
-            <span>{p.count}</span>
-          </div>
-          <div>
-            <span>{p.product.price}$</span>
-          </div>
-        </div>
-      ))}
-      <div className={style.sumOrder}>Summary <b>{ordersum}$</b></div>
+        ))
+      )}
+
+      <div className={style.sumOrder}>
+        Summary <b>{ordersum}$</b>
+      </div>
     </div>
   );
 };

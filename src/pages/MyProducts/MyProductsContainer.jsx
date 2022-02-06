@@ -4,7 +4,7 @@ import style from "./MyProducts.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import FilterFieldsContainer from "./FilterFields/FilterFieldsContainer";
 import Loader from "../../components/loader/Loader";
-import { paramsQuery, stateMyAccount } from "../../bus/myAccount/selectors";
+import { stateMyAccount } from "../../bus/myAccount/selectors";
 import { setMyProducts } from "../../bus/myAccount/thunks";
 import useModal from "../../hooks/useModal";
 import Modal from "../../components/modal/Modal";
@@ -14,24 +14,17 @@ import Button from "../../components/button/Button";
 import { useSearchParams } from "react-router-dom";
 
 const MyProductsContainer = ({ ...props }) => {
-  //const params = useSelector(paramsQuery);
   const state = useSelector(stateMyAccount);
   const { myProducts, loading, error } = state;
   const dispatch = useDispatch();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const paramsV = Object.fromEntries([...searchParams]);
-  useEffect(() => {
-    setSearchParams(paramsV);
-  }, []);
+
    useEffect(() => {
     dispatch(setMyProducts(paramsV));
   }, [dispatch, searchParams]);
-
-  // Change logic according to HM#4
-  // useEffect(() => {
-  //   dispatch(setMyProducts(params));
-  // }, [dispatch, params]);
+  
 
   const { isShowing, toggle } = useModal();
   const [productEdit, setProductEdit] = useState(null);

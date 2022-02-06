@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import style from "./FilterFields.module.css";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { selectStyles } from "./selectStyles";
 import MinMaxField from "../../../components/fields/MinMaxField";
 import { productsPerPageFilter } from "../../../utils/helpers/createObjSelectPages";
 import { getOrigins } from "../../../bus/products/thunks";
 import PaginationField from "../../../components/fields/PaginationField";
-//import { useDebounce } from "../../../hooks/useDebounce";
 import debounce from "lodash.debounce";
 import {
   setFilteredStrByOrigins,
@@ -19,19 +18,6 @@ import {
 } from "../../../bus/products/reducer";
 import { stateProducts } from "../../../bus/products/selectors";
 import { useSearchParams } from "react-router-dom";
-
-const debouncedMinInput = debounce(
-  (value, dispatch) => dispatch(setMinPrice(value)),
-  1000
-);
-const debouncedMaxInput = debounce(
-  (value, dispatch) => dispatch(setMaxPrice(value)),
-  1000
-);
-const debouncedOrigins = debounce(
-  (value, dispatch) => dispatch(setFilteredStrByOrigins(value)),
-  1000
-);
 
 const FilterFieldsContainer = () => {
   const dispatch = useDispatch();
@@ -51,13 +37,14 @@ const FilterFieldsContainer = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const paramsFromQuery = Object.fromEntries([...searchParams]);
+  const paramsQ = useRef();
+  paramsQ.current = paramsFromQuery;
 
   const originsFromQ = searchParams.get("origins");
   const pageFromQ = searchParams.get("page");
   const perPageFromQ = searchParams.get("perPage");
   const minPriceFromQ = searchParams.get("minPrice");
   const maxPriceFromQ = searchParams.get("maxPrice");
-
 
   const defaultValueOrigins = !originsFromQ
     ? origins.split(",").map((o) => ({
@@ -68,18 +55,20 @@ const FilterFieldsContainer = () => {
         value: o,
         label: o.charAt(0).toUpperCase() + o.slice(1),
       }));
+  const [selectStateOrigin, setSelectStateOrigin] = useState(defaultValueOrigins);
 
-
-  const [currentPageInput, setCurrentPageInput] = useState(!pageFromQ ? 1 : +pageFromQ);
-  const [perPageInput, setPerPageInput] = useState(!perPageFromQ ? 20 : +perPageFromQ);
+  const [currentPageInput, setCurrentPageInput] = useState(
+    !pageFromQ ? 1 : +pageFromQ
+  );
+  const [perPageInput, setPerPageInput] = useState(
+    !perPageFromQ ? 20 : +perPageFromQ
+  );
   const [minPriceState, setMinPriceState] = useState(
     !minPriceFromQ ? "" : minPriceFromQ
   );
-   const [maxPriceState, setMaxPriceState] = useState(
+  const [maxPriceState, setMaxPriceState] = useState(
     !maxPriceFromQ ? "" : maxPriceFromQ
   );
-
-    const [selectStateOrigin, setSelectStateOrigin] = useState(defaultValueOrigins);
 
 
   useEffect(() => {
@@ -87,48 +76,65 @@ const FilterFieldsContainer = () => {
   }, [pagesCount, dispatch, page]);
 
 
+  const debouncedMaxInput = debounce((value) => {
+    setSearchParams({ ...paramsQ.current, maxPrice: value });
+    dispatch(setMaxPrice(value));
+  }, 1000);
   const handleMaxPriceCb = useCallback((e) => {
-      const value = +e.currentTarget.value;
-      setMaxPriceState(value)
-      setSearchParams({ ...paramsFromQuery, maxPrice: value });
-      debouncedMaxInput(maxPriceState, dispatch)
-    },
-    [ setSearchParams, dispatch, paramsFromQuery, maxPriceState]
-  );
+    const value = +e.currentTarget.value;
+    setMaxPriceState(value);
+    debouncedMaxInput(value);
+  }, []);
 
+  const debouncedMinInput = debounce((value) => {
+    setSearchParams({ ...paramsQ.current, minPrice: value });
+    dispatch(setMinPrice(value));
+  }, 1000);
   const handleMinPriceCb = useCallback((e) => {
-      const value = +e.currentTarget.value;
-      setMinPriceState(value)
-      setSearchParams({ ...paramsFromQuery, minPrice: value });
-      debouncedMinInput(value, dispatch);
-    },
-    [setSearchParams, paramsFromQuery, dispatch]
-  );
+    const value = +e.currentTarget.value;
+    setMinPriceState(value);
+    debouncedMinInput(value);
+  }, []);
 
-  const pageChangedCb = useCallback((currentPage) => {
+  const pageChangedCb = useCallback(
+    (currentPage) => {
       setCurrentPageInput(currentPage);
-      setSearchParams({ ...paramsFromQuery, page: currentPage, perPage:perPageFromQ ?? perPage });
+      setSearchParams({
+        ...paramsFromQuery,
+        page: currentPage,
+        perPage: perPageFromQ ?? perPage,
+      });
       dispatch(setCurrentPage(currentPageInput));
     },
-    [paramsFromQuery,setSearchParams, perPage, perPageFromQ, dispatch, currentPageInput]
+    [
+      paramsFromQuery,
+      setSearchParams,
+      perPage,
+      perPageFromQ,
+      dispatch,
+      currentPageInput,
+    ]
   );
 
   const changePerPage = useCallback(
     (e) => {
-      setPerPageInput(e.value)
+      setPerPageInput(e.value);
       setSearchParams({ ...paramsFromQuery, perPage: e.value });
       dispatch(setProductsPerPage(perPageInput));
     },
     [setSearchParams, dispatch, perPageInput, paramsFromQuery]
   );
 
-  const onChangeSelectOrigin = (e) => {
-    setSelectStateOrigin(e)
+  const debouncedOrigins = debounce((value) => {
     setSearchParams({
       ...paramsFromQuery,
-      origins: e.map((o) => o.value).join(","),
+      origins: value.map((o) => o.value).join(","),
     });
-    debouncedOrigins(e, dispatch);
+    dispatch(setFilteredStrByOrigins(value));
+  }, 1000);
+  const onChangeSelectOrigin = (e) => {
+    setSelectStateOrigin(e);
+    debouncedOrigins(e);
   };
 
   const onReset = () => {
@@ -141,9 +147,11 @@ const FilterFieldsContainer = () => {
     };
     setSearchParams(clearFilters);
     dispatch(reset(clearFilters));
-    setMinPriceState('')
-    setMaxPriceState('')
-    setPerPageInput(20)
+    setMinPriceState("");
+    setMaxPriceState("");
+    setPerPageInput(20);
+    setCurrentPageInput(1);
+    setSelectStateOrigin("");
   };
 
   return (
@@ -158,7 +166,7 @@ const FilterFieldsContainer = () => {
         />
         <Select
           isMulti
-          value={origins === '' ? '' :selectStateOrigin}
+          value={!originsFromQ ? "" : selectStateOrigin}
           styles={selectStyles}
           name="origin"
           options={originsArr}
@@ -167,11 +175,7 @@ const FilterFieldsContainer = () => {
         />
         <Select
           styles={selectStyles}
-          value={
-            perPageInput === 20
-              ? ""
-              : productsPerPageFilter([perPageInput])
-          }
+          value={perPageInput === 20 ? "" : productsPerPageFilter([perPageInput])}
           name="pages"
           options={productsPerPageFilter([10, 25, 50])}
           placeholder="products per page..."

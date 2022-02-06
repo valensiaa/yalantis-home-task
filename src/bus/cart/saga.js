@@ -15,7 +15,9 @@ const createCheckoutRequestWorker = (actions) => {
       const items = dataOrders.data.items;
 
       yield put(
-        success({ stringRedirect: { url: `/orders`, orderId: id }, items })
+        success(
+          { stringRedirect: {url: `/orders`, orderId: id }, 
+          items })
       );
     } catch (e) {
       yield put(error(e));
