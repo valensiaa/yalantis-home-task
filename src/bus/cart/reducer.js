@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getOrders } from './thunks';
+import { checkoutActions, getOrdersActions } from "./constants";
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -7,13 +7,14 @@ export const cartSlice = createSlice({
     cartProducts: [],
     orders: [],
     loading: false,
-    error: '',
-    redirect:null
+    error: "",
+    redirect: null,
   },
   reducers: {
-    removeProductsAfterCheckout: (state) => {
-      state.cartProducts = []
-    },
+    // Change logic according to HM#4
+    // removeProductsAfterCheckout: (state) => {
+    //   state.cartProducts = [];
+    // },
     addToCart: (state, action) => {
       action.payload = { ...action.payload, quantity: 1 };
       state.cartProducts = [...state.cartProducts, action.payload];
@@ -31,26 +32,57 @@ export const cartSlice = createSlice({
         (obj) => obj.id !== action.payload
       );
     },
-    redirectAfterCheckOut: (state, action) => {
-      state.redirect = action.payload
+    setEmptyRedirect: (state) => {
+      state.redirect = null
     }
+    // Change logic according to HM#4
+    // redirectAfterCheckOut: (state, action) => {
+    //   state.redirect = action.payload
+    // }
   },
-  extraReducers:(builder) => {
+  extraReducers: (builder) => {
     builder
-      .addCase(getOrders.pending, (state) => {
-        state.loading = true
+      .addCase(checkoutActions.start, (state) => {
+        state.loading = true;
       })
-      .addCase(getOrders.fulfilled, (state, action) => {
+      .addCase(checkoutActions.success, (state, action) => {
+        const {stringRedirect} = action.payload
         state.loading = false;
-        state.orders = action.payload.items.reverse()
+        state.redirect = stringRedirect
+        state.cartProducts = []
       })
-      .addCase(getOrders.rejected, (state, action) => {
-        state.error = action.error.message
-        state.loading=false
+      .addCase(checkoutActions.error, (state, action) => {
+        state.error = action;
+        state.loading = false;
       })
-  }
+      .addCase(getOrdersActions.start, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrdersActions.success, (state, action) => {
+        state.loading = false;
+        state.orders = action.payload.reverse();
+      });
+
+    // Change logic according to HM#4
+    //   builder
+    //     .addCase(getOrders.pending, (state) => {
+    //       state.loading = true
+    //     })
+    //     .addCase(getOrders.fulfilled, (state, action) => {
+    //       state.loading = false;
+    //       state.orders = action.payload.items.reverse()
+    //     })
+    //     .addCase(getOrders.rejected, (state, action) => {
+    //       state.error = action.error.message
+    //       state.loading=false
+    //     })
+  },
 });
 
-export const { removeProductsAfterCheckout, addToCart, setCurrentCountForId, removeFromCart, redirectAfterCheckOut } =
-  cartSlice.actions;
+export const {
+  setEmptyRedirect,
+  addToCart,
+  setCurrentCountForId,
+  removeFromCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;

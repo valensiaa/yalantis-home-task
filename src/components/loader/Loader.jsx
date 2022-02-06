@@ -1,4 +1,4 @@
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import loaderImg from "../../assets/loader.png";
 import loaderMyProducts from "../../assets/loader-myproducts.png";
 

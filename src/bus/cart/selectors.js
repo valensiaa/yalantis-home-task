@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 const stateCartProducts = (state) => state.cart.cartProducts;
 export const stateCart = (state) => state.cart
-
+export const stateCheckout = (state) => state.checkout
 
 export const productsForOrder = createSelector(stateCartProducts, (cartArr) =>
   cartArr.reduce((acc, elem) => {

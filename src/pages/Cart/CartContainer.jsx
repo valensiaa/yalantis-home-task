@@ -1,8 +1,9 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import style from "./Cart.module.css";
 import Cart from "../../components/cart/Cart";
 import { removeFromCart } from "../../bus/cart/reducer";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   sumProducts,
   nProducts,
@@ -10,18 +11,19 @@ import {
   productsForOrder,
   stateCart,
 } from "../../bus/cart/selectors";
-import { Redirect } from "react-router";
-import { checkOutThunk } from "../../bus/cart/thunks";
+
+// Change logic according to HM#4
+//import { checkOutThunk } from "../../bus/cart/thunks";
+
 import { ButtonStyled } from "../../components/button/ButtonStyled";
+import { checkoutActions } from "../../bus/cart/constants";
+import { useNavigate } from "react-router";
 
 const CartContainer = () => {
   const dispatch = useDispatch();
-
   const nCartProducts = useSelector(nProducts);
   const sumCartProducts = useSelector(sumProducts);
   const groupedProductsInCart = useSelector(groupedProducts);
-  const state = useSelector(stateCart);
-  const { redirect } = state;
 
   const removeFromCartCb = useCallback(
     (id) => {
@@ -29,15 +31,25 @@ const CartContainer = () => {
     },
     [dispatch]
   );
-
+  const navigate = useNavigate();
   const dataCartForOrder = useSelector(productsForOrder);
+  const state = useSelector(stateCart);
+  const { redirect } = state;
   const checkoutCb = useCallback(() => {
-    checkOutThunk(dataCartForOrder, dispatch);
+    // Change logic according to HM#4
+    //checkOutThunk(dataCartForOrder, dispatch);
+
+    const body = {
+      order: {
+        pieces: dataCartForOrder,
+      },
+    };
+    dispatch(checkoutActions.init({ body }));
   }, [dispatch, dataCartForOrder]);
 
-  if (redirect) {
-    return <Redirect to={redirect} />;
-  }
+  useEffect(() => {
+    if (redirect) navigate(redirect.url);
+  }, [navigate, redirect]);
 
   return (
     <div className={style.cartBlock}>
@@ -59,7 +71,11 @@ const CartContainer = () => {
         <span> {sumCartProducts}$</span>
       </p>
       {nCartProducts !== 0 && (
-        <ButtonStyled primary onClick={() => checkoutCb()} className={style.productsCheckout}>
+        <ButtonStyled
+          primary
+          onClick={checkoutCb}
+          className={style.productsCheckout}
+        >
           Checkout
         </ButtonStyled>
       )}

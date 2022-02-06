@@ -4,14 +4,7 @@ import { fetchOrigin, fetchData } from "../../services/api";
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async (paramsQ) => {
-    const params = {
-      page: paramsQ.currentPage,
-      perPage: paramsQ.productsPerPage,
-      origins: paramsQ.filteredByOrigins,
-      minPrice: paramsQ.minPrice,
-      maxPrice: paramsQ.maxPrice,
-    };
-    const response = await fetchData(params);
+    const response = await fetchData(paramsQ)
     return response.data;
   }
 );
